@@ -12,10 +12,10 @@ const developmentPlugins = [
 ];
 
 const productionPlugins = [
-  new webpack.optimize.UglifyJsPlugin(),
 ];
 
 module.exports = {
+  mode: NODE_ENV,
   entry: [
     ...(NODE_ENV !== 'production' ? developmentEntries : []),
     path.resolve(__dirname, 'entry.js'),
@@ -27,7 +27,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      API_HOST: `'${process.env.API_HOST || 'http://localhost:4023'}'`,
+      API_HOST: `'${process.env.API_HOST || 'http://localhost:3000'}'`,
     }),
     ...(NODE_ENV !== 'production' ? developmentPlugins : productionPlugins),
     new webpack.NoEmitOnErrorsPlugin(),
