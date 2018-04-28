@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import ReactDOM from 'react-dom';
-import App from './App.jsx';
+import App from './app.jsx';
 
 ReactDOM.render(App, document.getElementById('root'));
 
