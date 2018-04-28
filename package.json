@@ -43,6 +43,7 @@
     "eslint-plugin-react": "^6.10.3"
   },
   "scripts": {
+    "build": "cd client && webpack --config ./webpack.config.js",
     "client": "webpack-dev-server --config ./client/webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
