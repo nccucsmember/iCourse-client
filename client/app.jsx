@@ -18,6 +18,7 @@ import {
   Provider,
 } from 'react-redux';
 import { reducer as formReducer } from 'redux-form';
+import fetchMiddleware from 'redux-middleware-fetch';
 
 // shared
 
@@ -25,12 +26,14 @@ import { reducer as formReducer } from 'redux-form';
 import MainBoard from './containers/MainBoard.jsx';
 
 // Reducers
+import Course from './reducers/Course.js';
 
 const history = createBrowserHistory();
 
 
 export const store = createStore(
   combineReducers({
+    Course,
     form: formReducer,
     routing: routerReducer,
   }),
@@ -39,6 +42,7 @@ export const store = createStore(
     applyMiddleware(
       thunk,
       routerMiddleware(history),
+      fetchMiddleware,
     ),
   ),
 );
