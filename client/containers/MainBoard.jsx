@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 // Main
 
 // Routes
+import CourseRoute from '../routes/Course.jsx';
 
 const styles = {
   wrapper: {
@@ -50,9 +51,8 @@ class MainBoard extends ReactComponent {
           </Switch>
           <div style={styles.main}>
             <div style={styles.content}>
-              <h1>Content</h1>
               <Switch>
-                {/* ContentRouter */}
+                <Route path="/course" component={CourseRoute} />
               </Switch>
             </div>
           </div>

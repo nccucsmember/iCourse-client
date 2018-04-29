@@ -1,6 +1,5 @@
 import React from 'react';
 import thunk from 'redux-thunk';
-import debug from 'debug';
 import {
   createStore,
   compose,
@@ -26,11 +25,6 @@ import { reducer as formReducer } from 'redux-form';
 import MainBoard from './containers/MainBoard.jsx';
 
 // Reducers
-
-// Debug mode
-if (process.env.NODE_ENV !== 'production') {
-  debug.enable('RomantichakkaAdmin:*');
-}
 
 const history = createBrowserHistory();
 
