@@ -52,7 +52,7 @@ class MainBoard extends ReactComponent {
           <div style={styles.main}>
             <div style={styles.content}>
               <Switch>
-                <Route path="/course" component={CourseRoute} />
+                <Route path="/" component={CourseRoute} />
               </Switch>
             </div>
           </div>
