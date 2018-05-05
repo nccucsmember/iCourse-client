@@ -24,7 +24,7 @@ const styles = {
     alignItems: 'center',
     width: '100%',
     height: 70,
-    margin: '0px 10px',
+    margin: '10px 10px',
   },
   left: {
     display: 'flex',
@@ -51,7 +51,6 @@ const styles = {
     cursor: 'pointer',
     border: 'none',
     outline: 'none',
-    transition: 'opacity 0.12s ease-out',
   },
   active: {
     border: '2px solid rgb(245, 166, 67)',
@@ -69,6 +68,12 @@ const styles = {
     borderRadius: '6px',
     border: '0.5px solid #fefefe',
     cursor: 'pointer',
+    transition: 'all 0.12s ease-out',
+    ':hover': {
+      backgroundColor: '#fefefe',
+      color: 'black',
+      fontWeight: 300,
+    },
   },
   logoutButton: {
     outline: 'none',
