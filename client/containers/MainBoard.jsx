@@ -48,7 +48,9 @@ class MainBoard extends ReactComponent {
       <div style={styles.wrapper}>
         <div style={styles.container}>
           <Switch>
-            <Route path="/" component={() => <SiteHeader />} />
+            <Route path="/login" component={props => <SiteHeader hide {...props} />} />
+            <Route path="/register" component={props => <SiteHeader hide {...props} />} />
+            <Route path="/" component={props => <SiteHeader {...props} />} />
           </Switch>
           <div style={styles.main}>
             <div style={styles.content}>

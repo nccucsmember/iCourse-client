@@ -5,10 +5,10 @@ import { PropTypes as T } from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import radium from 'radium';
-import { Link } from 'react-router-dom';
+import { Link as link } from 'react-router-dom';
 
 import logo from '../static/img/NCCU-logo.png';
-import SITE_LINKS from '../helper/setting.js';
+import { SITE_LINKS } from '../helper/setting.js';
 
 // import * as AuthActions from '../actions/Auth.js';
 
@@ -47,14 +47,14 @@ const styles = {
     fontWeight: 200,
     margin: 10,
     backgroundColor: 'transparent',
-    padding: '6px 24px',
+    padding: '6px 20px',
     cursor: 'pointer',
     border: 'none',
     outline: 'none',
     transition: 'opacity 0.12s ease-out',
   },
   active: {
-    border: '0.5px solid #fefefe',
+    border: '2px solid rgb(245, 166, 67)',
     borderRadius: '6px',
   },
   linkButton: {
@@ -80,18 +80,14 @@ const styles = {
   },
 };
 
+const Link = radium(link);
 
 class SiteHeader extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeCategory: null,
-    };
-  }
-
   render() {
     const {
+      location: {
+        pathname,
+      },
       hide,
       account,
       logout,
@@ -100,6 +96,9 @@ class SiteHeader extends Component {
     if (hide) {
       return null;
     }
+
+    const pathArray = pathname.split('/').filter(p => p);
+    const currentPath = pathArray.length ? pathArray[0] : null;
     return (
       <div style={styles.wrapper}>
         <div style={styles.container}>
@@ -108,15 +107,12 @@ class SiteHeader extends Component {
               <img style={styles.image} src={logo} alt="政治大學" />
             </Link>
             {SITE_LINKS.map(category => (
-              <Link key={category.id} to={`/${category.id}`}>
+              <Link
+                key={category.id}
+                to={`/${category.id}`}>
                 <button
-                  onClick={() => {
-                    this.setState(() => ({
-                      activeCategory: category.id,
-                    }));
-                  }}
                   style={[styles.linkSiteButton,
-                    this.state.activeCategory === category.id ? styles.active : null,
+                    currentPath === category.id ? styles.active : null,
                   ]}>{category.name}</button>
               </Link>
             ))}
@@ -145,12 +141,16 @@ SiteHeader.propTypes = {
   hide: T.bool,
   account: T.string,
   logout: T.func,
+  location: T.shape({
+    pathname: T.string,
+  }).isRequired,
 };
 
 SiteHeader.defaultProps = {
   hide: false,
   account: null,
   logout: null,
+
 };
 
 

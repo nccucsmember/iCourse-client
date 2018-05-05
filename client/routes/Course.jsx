@@ -9,6 +9,7 @@ function CourseRoute() {
   return (
     <Switch>
       <Route exact path="/" component={CourseList} />
+      <Route exact path="/course" component={CourseList} />
     </Switch>
   );
 }
