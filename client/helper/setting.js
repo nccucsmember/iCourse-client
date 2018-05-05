@@ -70,5 +70,20 @@ export const GENERAL_COURSE_TYPE = [
   },
 ];
 
+export const OPEN_TIME = [
+  {
+    id: 0,
+    name: '早上',
+  }, {
+    id: 1,
+    name: '中午',
+  }, {
+    id: 3,
+    name: '下午',
+  }, {
+    id: 4,
+    name: '晚上',
+  },
+];
 
 export default SITE_LINKS;

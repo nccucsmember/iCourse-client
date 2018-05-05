@@ -35,7 +35,7 @@ const styles = {
   coursesWraper: {
     display: 'flex',
     flexDirection: 'column',
-    width: '90%',
+    width: '100%',
   },
   courseWrapper: {
     display: 'flex',
@@ -114,9 +114,6 @@ const styles = {
     outline: '0px',
     cursor: 'pointer',
   },
-  filterWraper: {
-    width: '10%',
-  },
 };
 
 
@@ -174,7 +171,6 @@ class CourseList extends Component {
               </div>
             ))}
           </div>
-          <div style={styles.filterWraper} />
         </div>
       </div>
     );

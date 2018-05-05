@@ -15,6 +15,7 @@ import {
   COURSE_TIME,
   COURSE_TYPE,
   DEPTS,
+  OPEN_TIME,
   GENERAL_COURSE_TYPE,
 } from '../../helper/setting.js';
 
@@ -103,6 +104,11 @@ class CourseSearcher extends Component {
                 name="generalType" />
             </div>
             <div style={styles.inputGroup}>
+              <Field
+                component={Selector}
+                options={OPEN_TIME}
+                label="上課時間："
+                name="time" />
               <Field
                 component={CheckBoxGroup}
                 options={COURSE_TIME}
