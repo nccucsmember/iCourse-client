@@ -1,7 +1,7 @@
 export default {
   DEFAULT_COLOR: '#4a4a4a',
   WHITE_COLOR: '#ffffff',
-  TITLE_COLOR: '#42b1df',
+  TITLE_COLOR: '#124d65',
   SUBTITLE_COLOR: 'rgba(74, 74, 74, 0.9)',
   ACTIVE_COLOR: '#f5a643',
   INACTIVE_COLOR: 'rgba(74, 74, 74, 0.7)',
