@@ -28,9 +28,10 @@ const styles = {
     flexDirection: 'column',
   },
   main: {
-    backgroundColor: 'rgba(248, 248, 248, 0.95)',
+    backgroundColor: '#EBEBEB',
     display: 'flex',
     flexDirection: 'column',
+    paddingTop: 100,
   },
   content: {
     flex: 1,

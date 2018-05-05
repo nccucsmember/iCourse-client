@@ -14,6 +14,8 @@ import { SITE_LINKS } from '../helper/setting.js';
 
 const styles = {
   wrapper: {
+    position: 'fixed',
+    width: '100%',
     display: 'flex',
     justifyContent: 'flex-end',
     backgroundColor: '#4c7b9f',

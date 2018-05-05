@@ -10,13 +10,13 @@ export function clearState() {
   };
 }
 
-export function getCourseList() {
+export function getCourseList(limit = 10) {
   return {
     [API_REQUEST]: {
       types: [
         GET_COURSE_LIST,
       ],
-      entrypoint: '/course',
+      entrypoint: `/course?limit=${limit}`,
     },
   };
 }
