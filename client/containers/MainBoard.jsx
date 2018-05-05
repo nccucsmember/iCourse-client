@@ -35,6 +35,7 @@ const styles = {
     flexDirection: 'column',
     paddingTop: 100,
     backgroundImage: `url(${backgrounImage})`,
+    backgroundSize: 'cover',
   },
   content: {
     flex: 1,

@@ -1,159 +1,178 @@
-// @flow
-
-import React, { Component } from 'react';
+import React, {
+  Component,
+} from 'react';
 import radium from 'radium';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import {
-  arrayRemove,
-  arrayPush,
-  arrayRemoveAll,
-} from 'redux-form';
-import includes from 'lodash/includes';
+import T from 'prop-types';
 
 import Theme from '../../styles/Theme.js';
+import Form from '../../styles/Form.js';
 
 const styles = {
   groupWrapper: {
-    width: '100%',
     display: 'flex',
     flexWrap: 'wrap',
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    padding: 10,
+    borderRadius: 2,
+    position: 'relative',
   },
-  optionWrapper: {
+  checkboxWrapper: {
+    outline: 'none',
+    border: 0,
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+  },
+  itemWrapper: {
     display: 'flex',
     alignItems: 'center',
-    margin: '0 4px',
+    margin: '5px 0',
   },
-  optionBtn: {
-    width: 20,
-    height: 20,
-    borderRadius: 2,
-    padding: 2,
-    border: `1px solid ${Theme.DEFAULT_COLOR}`,
-    backgroundColor: 'transparent',
-    outline: 0,
-    cursor: 'pointer',
-    ':hover': {
-      opacity: 0.88,
-    },
-  },
-  actived: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: Theme.ACTIVE_COLOR,
+  labelWrapper: {
+    margin: '0 5px',
   },
   label: {
+    textAlign: 'left',
     fontSize: 14,
-    color: Theme.DEFAULT_COLOR,
-    padding: '4px 8px',
-    letterSpacing: 2,
-    whiteSpace: 'nowrap',
+    color: Theme.DARK_TEXT,
+  },
+  boxWrapper: {
+    marginRight: 5,
+  },
+  box: {
+    border: `1px solid ${Theme.THEME_MAIN_COLOR}`,
+    width: 20,
+    height: 20,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 2,
+  },
+  check: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: Theme.OBJECT_LIST_THEME,
+  },
+  checkboxGroupTitle: {
+    width: '100%',
+    fontSize: 16,
+    fontWeight: 300,
+    margin: 5,
   },
 };
 
-type Props = {
-  pushId: Function,
-  removeIndex: Function,
-  resetArrayValues: Function,
-  shouldReset?: Boolean, // Flag checking value is changing from api(no reset) or user(reset needed)
-  options: Array<Object>,
-  input: {
-    value: Array<Number> | Array<String>, // value should not be an object
-  },
-};
-
-class CheckBoxGroup extends Component {
-  componentWillReceiveProps({
-    options,
-    resetArrayValues,
-    shouldReset,
-  }) {
-    if (options !== this.props.options && options) {
-      if (shouldReset) resetArrayValues();
+class CheckboxGroup extends Component {
+  componentDidUpdate(prevProps) {
+    if (prevProps.meta.initial && prevProps.dependentValue !== this.props.dependentValue) {
+      this.props.input.onChange([]);
     }
   }
 
-  isActive(optionId) {
+  handleChange(d) {
     const {
       input: {
         value,
+        onChange,
       },
     } = this.props;
 
-    if (!value && !Array.isArray(value)) return false;
+    if (value && value.length !== 0) {
+      const existIndex = value.findIndex(r => r === d);
 
-    return includes(value.map(v => parseInt(v, 10)), parseInt(optionId, 10));
-  }
-
-  handleChange(optionId) {
-    const {
-      input: {
-        value,
-      },
-      pushId,
-      removeIndex,
-    } = this.props;
-
-    const isActived = this.isActive(optionId);
-
-    if (isActived) {
-      const valueIndex = value.findIndex(v => parseInt(v, 10) === parseInt(optionId, 10));
-
-      if (~valueIndex) return removeIndex(valueIndex);
-
-      return null;
+      if (existIndex !== -1) {
+        onChange([
+          ...value.slice(0, existIndex),
+          ...value.slice(existIndex + 1),
+        ]);
+      } else {
+        onChange([
+          ...value,
+          d,
+        ]);
+      }
+    } else {
+      onChange([d]);
     }
-
-    return pushId(parseInt(optionId, 10));
   }
-
-  props: Props
 
   render() {
     const {
+      label,
       options,
+      input: {
+        value,
+      },
+      meta: {
+        touched,
+        error,
+        submitFailed,
+      },
     } = this.props;
-
-    if (!options) return null;
 
     return (
       <div style={styles.groupWrapper}>
-        {options[0] ? options.map(option => (
-          <div key={option.id} style={styles.optionWrapper}>
+        {(touched || submitFailed) && error && <span style={Form.error}>{error}</span>}
+        <div style={styles.checkboxGroupTitle}>
+          <span>{label}</span>
+        </div>
+        {options ? (options.map(n => (
+          <div key={n.id}>
             <button
-              key={`${option.id}_button`}
               type="button"
-              onClick={() => this.handleChange(option.id)}
-              style={styles.optionBtn}>
-              {this.isActive(option.id) ? (
-                <div style={styles.actived} />
-              ) : null}
+              style={styles.checkboxWrapper}
+              onClick={() => this.handleChange(n.id)} >
+              <div style={styles.itemWrapper}>
+                <div style={styles.boxWrapper}>
+                  <div style={styles.box}>
+                    {value && value.find(item => item === n.id) ? (
+                      <div style={styles.check} />
+                    ) : null}
+                  </div>
+                </div>
+                <div style={styles.labelWrapper}>
+                  <span style={styles.label}>
+                    {n.name || null}
+                  </span>
+                </div>
+              </div>
             </button>
-            <span style={styles.label}>{option.name || null}</span>
           </div>
-        )) : null}
+        ))) : null}
       </div>
     );
   }
 }
 
-CheckBoxGroup.defaultProps = {
-  shouldReset: true,
+CheckboxGroup.propTypes = {
+  options: T.arrayOf(T.shape({
+    id: T.oneOfType([T.number, T.string]),
+    name: T.string,
+  })).isRequired,
+  input: T.shape({
+    value: T.oneOfType([
+      T.string,
+      T.number,
+      T.array,
+    ]),
+    onChange: T.func,
+    name: T.string,
+  }).isRequired,
+  label: T.string,
+  meta: T.shape({
+    touched: T.bool.isRequired,
+    submitFailed: T.bool.isRequired,
+    error: T.string,
+  }).isRequired,
+  dependentValue: T.number,
 };
 
-export function wrapFormToCheckBoxGroup(formName, fieldName) {
-  if (!formName || !fieldName) return null;
+CheckboxGroup.defaultProps = {
+  dependentValue: 0,
+  label: '',
+  meta: {
+    error: '',
+  },
+};
 
-  return connect(
-    () => ({}),
-    dispatch => bindActionCreators({
-      pushId: v => arrayPush(formName, fieldName, v),
-      removeIndex: index => arrayRemove(formName, fieldName, parseInt(index, 10)),
-      resetArrayValues: () => arrayRemoveAll(formName, fieldName),
-    }, dispatch)
-  )(radium(CheckBoxGroup));
-}
-
-export default radium(CheckBoxGroup);
+export default radium(CheckboxGroup);

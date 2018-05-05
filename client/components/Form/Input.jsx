@@ -11,6 +11,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: 5,
   },
   innerWrap: {
     width: '100%',
@@ -34,6 +35,8 @@ const styles = {
   labelText: {
     width: 95,
     padding: '0 10px 5px 5px',
+    fontWeight: 300,
+    fontSize: 16,
   },
   prefix: {
     fontSize: 14,
