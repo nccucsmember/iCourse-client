@@ -19,6 +19,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'flex-end',
     backgroundColor: '#4c7b9f',
+    zIndex: 10,
   },
   container: {
     display: 'flex',
