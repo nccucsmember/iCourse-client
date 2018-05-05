@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 
 // Main
+import SiteHeader from './SiteHeader.jsx';
 
 // Routes
 import CourseRoute from '../routes/Course.jsx';
@@ -27,7 +28,7 @@ const styles = {
     flexDirection: 'column',
   },
   main: {
-    backgroundColor: 'rgba(241, 241, 241, 0.95)',
+    backgroundColor: 'rgba(248, 248, 248, 0.95)',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -47,7 +48,7 @@ class MainBoard extends ReactComponent {
       <div style={styles.wrapper}>
         <div style={styles.container}>
           <Switch>
-            <Route path="/" component={() => <h1 style={{ height: 80 }}>NavigationBar and SiteHeader</h1>} />
+            <Route path="/" component={() => <SiteHeader />} />
           </Switch>
           <div style={styles.main}>
             <div style={styles.content}>
