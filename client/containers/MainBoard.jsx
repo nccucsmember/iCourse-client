@@ -14,6 +14,8 @@ import SiteHeader from './SiteHeader.jsx';
 // Routes
 import CourseRoute from '../routes/Course.jsx';
 
+import backgrounImage from '../static/img/star.png';
+
 const styles = {
   wrapper: {
     height: '100%',
@@ -28,10 +30,11 @@ const styles = {
     flexDirection: 'column',
   },
   main: {
-    backgroundColor: '#EBEBEB',
+    // backgroundColor: '#EBEBEB',
     display: 'flex',
     flexDirection: 'column',
     paddingTop: 100,
+    backgroundImage: `url(${backgrounImage})`,
   },
   content: {
     flex: 1,
