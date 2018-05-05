@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import * as CourseActions from '../../actions/Course.js';
 
 import Theme from '../../styles/Theme.js';
+import CourseSearcher from './CourseSearcher.jsx';
 
 // components
 
@@ -145,7 +146,7 @@ class CourseList extends Component {
           <div style={styles.h1Wrapper}>
             <h1 style={styles.h1}>課程清單</h1>
           </div>
-          {/* Searcher */}
+          <CourseSearcher />
           <div style={styles.coursesWraper}>
             <div style={[styles.headerWrapper]}>
               <span style={[styles.header]}>學期</span>
@@ -176,9 +177,7 @@ class CourseList extends Component {
               </div>
             ))}
           </div>
-          <div style={styles.filterWraper}>
-            篩選區
-          </div>
+          <div style={styles.filterWraper} />
         </div>
       </div>
     );
