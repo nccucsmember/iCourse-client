@@ -44,5 +44,31 @@ export const COURSE_TYPE = [
   },
 ];
 
+export const DEPTS = [
+  {
+    id: 0,
+    name: '文學院',
+  }, {
+    id: 1,
+    name: '理學院',
+  }, {
+    id: 2,
+    name: '社會科學院',
+  },
+];
+
+export const GENERAL_COURSE_TYPE = [
+  {
+    id: 0,
+    name: '人文通識',
+  }, {
+    id: 1,
+    name: '自然通識',
+  }, {
+    id: 3,
+    name: '社會通識',
+  },
+];
+
 
 export default SITE_LINKS;

@@ -11,10 +11,16 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as courseActions from '../../actions/Course.js';
 
-import { COURSE_TIME, COURSE_TYPE } from '../../helper/setting.js';
+import {
+  COURSE_TIME,
+  COURSE_TYPE,
+  DEPTS,
+  GENERAL_COURSE_TYPE,
+} from '../../helper/setting.js';
 
 import Input from '../../components/Form/Input.jsx';
 import CheckBoxGroup from '../../components/Form/CheckboxGroup.jsx';
+import Selector from '../../components/Form/Selector.jsx';
 import SubmitButton from '../../components/Form/SubmitButton.jsx';
 
 const styles = {
@@ -83,6 +89,18 @@ class CourseSearcher extends Component {
                 component={Input}
                 label="關鍵字"
                 name="keyword" />
+            </div>
+            <div style={styles.inputGroup}>
+              <Field
+                component={Selector}
+                options={DEPTS}
+                label="開課單位："
+                name="dept" />
+              <Field
+                component={Selector}
+                options={GENERAL_COURSE_TYPE}
+                label="通識類別："
+                name="generalType" />
             </div>
             <div style={styles.inputGroup}>
               <Field

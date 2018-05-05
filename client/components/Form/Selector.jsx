@@ -10,6 +10,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     padding: 8,
+    margin: 4,
   },
   groupFlex: {
     flex: 1,
@@ -27,6 +28,9 @@ const styles = {
     color: Theme.DEFAULT_COLOR,
     padding: '0 5px 0 0',
     letterSpacing: 2,
+    padding: '0 10px 5px 5px',
+    fontWeight: 300,
+    fontSize: 16,
   },
   formLabel: {
     width: 95,
