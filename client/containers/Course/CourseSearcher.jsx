@@ -58,17 +58,12 @@ const styles = {
 const FORM_NAME = 'COURSE_SEARCHER';
 
 class CourseSearcher extends Component {
-  submit(d) {
-    const {} = this.props;
-    console.log(d)
-
+  submit(data) {
     const {
-      keyword,
-    } = d;
+      getCourseList,
+    } = this.props;
 
-    if (keyword) {
-      // getShopListByKeyword(keyword);
-    }
+    getCourseList(data);
   }
 
   render() {
@@ -94,11 +89,13 @@ class CourseSearcher extends Component {
             <div style={styles.inputGroup}>
               <Field
                 component={Selector}
+                nullable
                 options={DEPTS}
                 label="開課單位："
                 name="dept" />
               <Field
                 component={Selector}
+                nullable
                 options={GENERAL_COURSE_TYPE}
                 label="通識類別："
                 name="generalType" />
@@ -107,6 +104,7 @@ class CourseSearcher extends Component {
               <Field
                 component={Selector}
                 options={OPEN_TIME}
+                nullable
                 label="上課時間："
                 name="time" />
               <Field
@@ -132,6 +130,7 @@ class CourseSearcher extends Component {
 
 CourseSearcher.propTypes = {
   handleSubmit: T.func.isRequired,
+  getCourseList: T.func.isRequired,
 };
 
 

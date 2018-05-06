@@ -46,13 +46,13 @@ export const COURSE_TYPE = [
 
 export const DEPTS = [
   {
-    id: 0,
-    name: '文學院',
+    id: '商學院',
+    name: '商學院',
   }, {
-    id: 1,
+    id: '理學院',
     name: '理學院',
   }, {
-    id: 2,
+    id: '社會科學院',
     name: '社會科學院',
   },
 ];
