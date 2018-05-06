@@ -63,7 +63,10 @@ class CourseSearcher extends Component {
       getCourseList,
     } = this.props;
 
-    getCourseList(data);
+    getCourseList({
+      ...data,
+      dept: data.dept === '-1' ? null : data.dept,
+    });
   }
 
   render() {
@@ -133,6 +136,8 @@ CourseSearcher.propTypes = {
   getCourseList: T.func.isRequired,
 };
 
+CourseSearcher.defaultProps = {
+};
 
 const reduxHook = connect(
   () => ({
