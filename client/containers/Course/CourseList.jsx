@@ -132,6 +132,7 @@ class CourseList extends Component {
   render() {
     const {
       courses,
+      haveAccessToken,
     } = this.props;
 
     return (
@@ -166,7 +167,18 @@ class CourseList extends Component {
                     {`${course.course_weekday} ${course.course_begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.course_end_time.match(/T(\d+:\d+)/i)[1]}`}
                   </span>
                   <button style={[styles.detailButton, { flex: '2 2 100px' }]}>more</button>
-                  <button style={[styles.addButton, { flex: '2 2 140px' }]}>加入追蹤清單</button>
+                  <button
+                    style={[styles.addButton, { flex: '2 2 140px' }]}
+                    onClick={() => {
+                      if (!haveAccessToken) {
+                        const {
+                          history,
+                        } = this.props;
+                        window.alert('尚未登入, 前往登入');
+                        return history.replace('/login');
+                      }
+                      return null;
+                    }}>加入追蹤清單</button>
                 </div>
               </div>
             ))}
@@ -181,6 +193,7 @@ class CourseList extends Component {
 const reduxHook = connect(
   state => ({
     courses: state.Course.courseList,
+    haveAccessToken: state.Auth.accessToken !== null,
   }),
   dispatch => bindActionCreators({
     ...CourseActions,
@@ -192,6 +205,9 @@ CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
+  haveAccessToken: T.bool.isRequired,
+  // Router
+  history: T.shape({}).isRequired,
 };
 
 CourseList.defaultProps = {
