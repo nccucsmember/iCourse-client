@@ -19,6 +19,7 @@ export function getCourseList(query = null) {
       dept,
       keyword,
       weekday,
+      offset,
     } = query;
 
     const params = {
@@ -29,6 +30,7 @@ export function getCourseList(query = null) {
     if (weekday) { params.weekday = weekday; }
     if (limit) { params.limit = limit; }
     if (keyword) { params.zh = keyword; }
+    if (offset) { params.offset = offset; }
 
     return {
       [API_REQUEST]: {

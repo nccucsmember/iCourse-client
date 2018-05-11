@@ -11,6 +11,7 @@ import Theme from '../../styles/Theme.js';
 import CourseSearcher from './CourseSearcher.jsx';
 
 // components
+import Pagination from '../../components/Pagination.jsx';
 
 
 // Style
@@ -117,7 +118,16 @@ const styles = {
 };
 
 
+const LIST_LIMITS = 10;
+
 class CourseList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cursor: 0,
+    };
+  }
+
   componentWillMount() {
     const {
       getCourseList,
@@ -132,7 +142,9 @@ class CourseList extends Component {
   render() {
     const {
       courses,
+      getCourseList,
     } = this.props;
+    console.log(this.state);
 
     return (
       <div style={styles.wrapper}>
@@ -171,6 +183,25 @@ class CourseList extends Component {
               </div>
             ))}
           </div>
+          <Pagination
+            disableForward={this.state.cursor > 100}
+            disableBackward={this.state.cursor <= 0}
+            forward={() => {
+              this.setState({
+                cursor: this.state.cursor + LIST_LIMITS,
+              }, () => {
+                getCourseList({
+                  offset: this.state.cursor,
+                });
+              });
+            }}
+            backward={() => {
+              this.setState({
+                cursor: this.state.cursor - LIST_LIMITS,
+              }, () => getCourseList({
+                offset: this.state.cursor,
+              }));
+            }} />
         </div>
       </div>
     );
