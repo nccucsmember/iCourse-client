@@ -27,6 +27,7 @@ import MainBoard from './containers/MainBoard.jsx';
 
 // Reducers
 import Course from './reducers/Course.js';
+import Auth from './reducers/Auth.js';
 
 const history = createBrowserHistory();
 
@@ -34,6 +35,7 @@ const history = createBrowserHistory();
 export const store = createStore(
   combineReducers({
     Course,
+    Auth,
     form: formReducer,
     routing: routerReducer,
   }),

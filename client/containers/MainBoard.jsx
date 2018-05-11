@@ -8,7 +8,7 @@ import {
   Redirect,
 } from 'react-router';
 import { connect } from 'react-redux';
-// import LoginPage from 'LoginPage.jsx';
+import LoginPage from './LoginPage.jsx';
 
 // Main
 import SiteHeader from './SiteHeader.jsx';
@@ -47,9 +47,9 @@ const styles = {
 };
 
 function ToLoginPage({
-  isLogin,
+  haveAccessToken,
 }) {
-  if (isLogin) {
+  if (haveAccessToken) {
     return (
       <Switch>
         <Route path="/" component={CourseRoute} />
@@ -63,12 +63,12 @@ function ToLoginPage({
 }
 
 ToLoginPage.propTypes = {
-  isLogin: T.bool.isRequired,
+  haveAccessToken: T.bool.isRequired,
 };
 
 const reduxHook = connect(
   state => ({
-    isLogin: false,
+    haveAccessToken: state.Auth.accessToken !== null,
   })
 );
 
@@ -91,7 +91,7 @@ class MainBoard extends ReactComponent {
           <div style={styles.main}>
             <div style={styles.content}>
               <Switch>
-                <Route path="/login" component={() => (<h1>LOGIN</h1>)} />
+                <Route path="/login" component={LoginPage} />
                 <Route path="/" component={ClientRoute} />
               </Switch>
             </div>
