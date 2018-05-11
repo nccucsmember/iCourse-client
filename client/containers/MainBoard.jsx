@@ -58,7 +58,12 @@ function ToLoginPage({
     );
   }
   return (
-    <Redirect to="/login" />
+    <Switch>
+      <Route path="/course" component={CourseRoute} />
+      <Redirect from="/select" to="/login" />
+      <Redirect from="/trace" to="/login" />
+      <Route path="/" component={CourseRoute} />
+    </Switch>
   );
 }
 
