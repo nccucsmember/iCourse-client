@@ -8,6 +8,7 @@ import radium from 'radium';
 import {
   reduxForm,
   Field,
+  SubmissionError,
 } from 'redux-form';
 
 import * as authActions from '../actions/Auth.js';
@@ -86,7 +87,15 @@ class LoginPage extends Component {
     const {
       login,
     } = this.props;
-    login(data);
+
+    if (!data.email) {
+      throw new SubmissionError({ email: '未填寫' });
+    }
+    if (!data.password) {
+      throw new SubmissionError({ password: '未填寫' });
+    }
+
+    return login(data);
   }
 
   render() {
