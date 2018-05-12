@@ -174,8 +174,10 @@ class CourseList extends Component {
                         const {
                           history,
                         } = this.props;
-                        window.alert('尚未登入, 前往登入');
-                        return history.replace('/login');
+                        if (window.confirm('尚未登入, 是否前往登入?')) {
+                          return history.replace('/login');
+                        }
+                        return null;
                       }
                       return null;
                     }}>加入追蹤清單</button>
