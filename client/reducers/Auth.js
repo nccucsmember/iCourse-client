@@ -15,7 +15,7 @@ export default (state = {
       };
     }
     case LOGOUT: {
-      updateAccessToken('authorization', null);
+      localStorage.removeItem('authorization');
       return {
         account: null,
         accessToken: null,
