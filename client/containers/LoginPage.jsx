@@ -89,6 +89,16 @@ class LoginPage extends Component {
     };
   }
 
+  componentWillMount() {
+    const {
+      history,
+      haveAccessToken,
+    } = this.props;
+    if (haveAccessToken) {
+      history.replace('/');
+    }
+  }
+
   componentWillReceiveProps(nextProp) {
     const {
       history,

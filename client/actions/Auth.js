@@ -1,6 +1,7 @@
 import { API_REQUEST } from 'redux-middleware-fetch';
 
 export const LOGIN = Symbol('LOGIN');
+export const LOGOUT = Symbol('LOGOUT');
 
 export function login(payload, onFailed) {
   return {
@@ -16,5 +17,11 @@ export function login(payload, onFailed) {
         onFailed('帳號密碼錯誤');
       },
     },
+  };
+}
+
+export function logout() {
+  return {
+    type: LOGOUT,
   };
 }
