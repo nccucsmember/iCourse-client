@@ -75,12 +75,18 @@ const styles = {
     margin: 0,
     color: Theme.TITLE_COLOR,
   },
+  error: {
+    color: 'red',
+    margin: 5,
+  },
 };
 
 class LoginPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      errorText: '',
+    };
   }
 
   componentWillReceiveProps(nextProp) {
@@ -105,7 +111,11 @@ class LoginPage extends Component {
       throw new SubmissionError({ password: '未填寫' });
     }
 
-    return login(data);
+    return login(data, (errorMessage) => {
+      this.setState({
+        errorText: errorMessage,
+      });
+    });
   }
 
   render() {
@@ -138,6 +148,7 @@ class LoginPage extends Component {
                   label="密碼：" />
                 <SubmitButton label="登入" />
               </form>
+              <span style={styles.error}>{this.state.errorText}</span>
             </div>
           </div>
           <div style={styles.coverWrapper}>

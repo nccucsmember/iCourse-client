@@ -2,7 +2,7 @@ import { API_REQUEST } from 'redux-middleware-fetch';
 
 export const LOGIN = Symbol('LOGIN');
 
-export function login(payload) {
+export function login(payload, onFailed) {
   return {
     [API_REQUEST]: {
       types: [
@@ -12,6 +12,9 @@ export function login(payload) {
       json: true,
       method: 'POST',
       entrypoint: '/api/v1/login',
+      onFailed: () => {
+        onFailed('帳號密碼錯誤');
+      },
     },
   };
 }
