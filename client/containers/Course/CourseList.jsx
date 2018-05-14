@@ -132,6 +132,7 @@ class CourseList extends Component {
   render() {
     const {
       courses,
+      haveAccessToken,
     } = this.props;
 
     return (
@@ -156,17 +157,30 @@ class CourseList extends Component {
             {courses[0] && courses.map((course, index) => (
               <div key={course.course_id} style={styles.courseWrapper}>
                 <div style={[styles.course, index % 2 !== 0 ? styles.courseRowEven : null]}>
-                  <span style={[styles.text, { flex: '1 1 50px' }]}>{course.course_semester || ''}</span>
+                  <span style={[styles.text, { flex: '1 1 50px' }]}>{course.semester || ''}</span>
                   <span style={[styles.text, { flex: '2 2 100px' }]}>{course.course_name_ch || ''}</span>
-                  <span style={[styles.text, { flex: '2 2 100px' }]}>{course.course_teacher || ''}</span>
-                  <span style={[styles.text, { flex: '2 2 100px' }]}>{course.location_id || ''}</span>
-                  <span style={[styles.text, { flex: '1.2 1.2 60px' }]}>{course.course_dept || ''}</span>
+                  <span style={[styles.text, { flex: '2 2 100px' }]}>{course.teacher || ''}</span>
+                  <span style={[styles.text, { flex: '2 2 100px' }]}>{course.location || ''}</span>
+                  <span style={[styles.text, { flex: '1.2 1.2 60px' }]}>{course.department || ''}</span>
                   <span style={[styles.text, { flex: '1 1 50px' }]}>{course.course_type || ''}</span>
                   <span style={[styles.text, { flex: '4 4 200px' }]}>
-                    {`${course.course_weekday} ${course.course_begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.course_end_time.match(/T(\d+:\d+)/i)[1]}`}
+                    {`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}
                   </span>
                   <button style={[styles.detailButton, { flex: '2 2 100px' }]}>more</button>
-                  <button style={[styles.addButton, { flex: '2 2 140px' }]}>加入追蹤清單</button>
+                  <button
+                    style={[styles.addButton, { flex: '2 2 140px' }]}
+                    onClick={() => {
+                      if (!haveAccessToken) {
+                        const {
+                          history,
+                        } = this.props;
+                        if (window.confirm('尚未登入, 是否前往登入?')) {
+                          return history.replace('/login');
+                        }
+                        return null;
+                      }
+                      return null;
+                    }}>加入追蹤清單</button>
                 </div>
               </div>
             ))}
@@ -181,6 +195,7 @@ class CourseList extends Component {
 const reduxHook = connect(
   state => ({
     courses: state.Course.courseList,
+    haveAccessToken: state.Auth.accessToken !== null,
   }),
   dispatch => bindActionCreators({
     ...CourseActions,
@@ -192,6 +207,9 @@ CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
+  haveAccessToken: T.bool.isRequired,
+  // Router
+  history: T.shape({}).isRequired,
 };
 
 CourseList.defaultProps = {

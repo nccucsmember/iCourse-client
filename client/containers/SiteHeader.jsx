@@ -10,7 +10,7 @@ import { Link as link } from 'react-router-dom';
 import logo from '../static/img/NCCU-logo.png';
 import { SITE_LINKS } from '../helper/setting.js';
 
-// import * as AuthActions from '../actions/Auth.js';
+import * as AuthActions from '../actions/Auth.js';
 
 const styles = {
   wrapper: {
@@ -84,7 +84,12 @@ const styles = {
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
-    color: '#444',
+    color: '#fefefe',
+    fontSize: 13,
+  },
+  text: {
+    color: '#fefefe',
+    fontSize: 13,
   },
 };
 
@@ -97,10 +102,9 @@ class SiteHeader extends Component {
         pathname,
       },
       hide,
-      account,
+      accessToken,
       logout,
     } = this.props;
-
     if (hide) {
       return null;
     }
@@ -126,8 +130,9 @@ class SiteHeader extends Component {
             ))}
           </div>
           <div style={styles.right}>
-            {account ?
-              (<span>Hi, {account}
+            {accessToken ?
+              (<span
+                style={styles.text}>Hi!
                 <button style={styles.logoutButton} onClick={() => logout()}>(logout)</button>
               </span>)
               : [
@@ -147,7 +152,7 @@ class SiteHeader extends Component {
 
 SiteHeader.propTypes = {
   hide: T.bool,
-  account: T.string,
+  accessToken: T.string,
   logout: T.func,
   location: T.shape({
     pathname: T.string,
@@ -156,7 +161,7 @@ SiteHeader.propTypes = {
 
 SiteHeader.defaultProps = {
   hide: false,
-  account: null,
+  accessToken: null,
   logout: null,
 
 };
@@ -164,10 +169,10 @@ SiteHeader.defaultProps = {
 
 const reduxHook = connect(
   state => ({
-    // account: state.Auth.account || null,
+    accessToken: state.Auth.accessToken || null,
   }),
   dispatch => bindActionCreators({
-    // ...AuthActions,
+    ...AuthActions,
   }, dispatch)
 );
 
