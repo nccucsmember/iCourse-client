@@ -60,8 +60,16 @@ function ToLoginPage({
   return (
     <Switch>
       <Route path="/course" component={CourseRoute} />
-      <Redirect from="/select" to="/login" />
-      <Redirect from="/trace" to="/login" />
+      <Redirect
+        from="/select" to={{
+          pathname: '/login',
+          state: { next: '/select' },
+        }} />
+      <Redirect
+        from="/trace" to={{
+          pathname: '/login',
+          state: { next: '/trace' },
+        }} />
       <Route path="/" component={CourseRoute} />
     </Switch>
   );

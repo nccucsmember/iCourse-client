@@ -101,11 +101,18 @@ class LoginPage extends Component {
 
   componentWillReceiveProps(nextProp) {
     const {
-      history,
+      history: {
+        replace,
+        location,
+      },
       haveAccessToken,
     } = this.props;
     if (nextProp.haveAccessToken !== haveAccessToken && nextProp.haveAccessToken) {
-      history.goBack();
+      if (location.state) {
+        replace(location.state.next);
+      } else {
+        replace('/');
+      }
     }
   }
 
