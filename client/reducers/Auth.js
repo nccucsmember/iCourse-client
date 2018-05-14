@@ -9,7 +9,7 @@ export default (state = {
       return {
         ...state,
         account: action.user_id,
-        accessToken: action.accessToken,
+        accessToken: action.auth_token,
       };
     }
     default:

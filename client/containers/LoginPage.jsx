@@ -83,6 +83,16 @@ class LoginPage extends Component {
     this.state = {};
   }
 
+  componentWillReceiveProps(nextProp) {
+    const {
+      history,
+      haveAccessToken,
+    } = this.props;
+    if (nextProp.haveAccessToken !== haveAccessToken && nextProp.haveAccessToken) {
+      history.goBack();
+    }
+  }
+
   submit(data) {
     const {
       login,
@@ -144,6 +154,9 @@ LoginPage.propTypes = {
   handleSubmit: T.func.isRequired,
   // redux
   login: T.func.isRequired,
+  haveAccessToken: T.bool.isRequired,
+  // router
+  history: T.shape({}).isRequired,
 };
 
 LoginPage.defaultProp = {
@@ -152,7 +165,7 @@ LoginPage.defaultProp = {
 
 const reduxHook = connect(
   state => ({
-
+    haveAccessToken: state.Auth.accessToken !== null,
   }), dispatch => bindActionCreators({
     ...authActions,
   }, dispatch)
