@@ -133,6 +133,8 @@ class CourseList extends Component {
     const {
       courses,
       haveAccessToken,
+      addToTrackList,
+      addToTrackListMsg,
     } = this.props;
 
     return (
@@ -179,6 +181,12 @@ class CourseList extends Component {
                         }
                         return null;
                       }
+                      if (window.confirm('是否加入追蹤清單？')) {
+                        addToTrackList(course.subject_id);
+                      }
+                      if (addToTrackListMsg) {
+                        window.alert(addToTrackListMsg);
+                      }
                       return null;
                     }}>加入追蹤清單</button>
                 </div>
@@ -195,6 +203,7 @@ class CourseList extends Component {
 const reduxHook = connect(
   state => ({
     courses: state.Course.courseList,
+    addToTrackListMsg: state.Course.addToTrackListMsg,
     haveAccessToken: state.Auth.accessToken !== null,
   }),
   dispatch => bindActionCreators({
@@ -206,14 +215,17 @@ const reduxHook = connect(
 CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
+  addToTrackList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   haveAccessToken: T.bool.isRequired,
+  addToTrackListMsg: T.string,
   // Router
   history: T.shape({}).isRequired,
 };
 
 CourseList.defaultProps = {
   courses: [],
+  addToTrackListMsg: '',
 };
 
 export default reduxHook(

@@ -3,11 +3,24 @@ import qs from 'querystring';
 
 export const GET_COURSE_LIST = 'GET_COURSE_LIST';
 export const CLEAR_STATE = 'CLEAR_STATE';
+export const ADD_TO_TRACKLIST = 'ADD_TO_TRACKLIST';
 
 
 export function clearState() {
   return {
     type: CLEAR_STATE,
+  };
+}
+
+export function addToTrackList(subjectId) {
+  return {
+    [API_REQUEST]: {
+      types: [
+        ADD_TO_TRACKLIST,
+      ],
+      method: 'PUT',
+      entrypoint: `/managecourse/${subjectId}`,
+    },
   };
 }
 
