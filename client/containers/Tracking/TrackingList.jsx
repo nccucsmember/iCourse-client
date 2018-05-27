@@ -5,7 +5,7 @@ import { PropTypes as T } from 'prop-types';
 import radium from 'radium';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as CourseActions from '../../actions/Course.js';
+import * as TrackingActions from '../../actions/Tracking.js';
 
 import Theme from '../../styles/Theme.js';
 // components
@@ -199,12 +199,10 @@ class CourseList extends Component {
 
 const reduxHook = connect(
   state => ({
-    courses: state.Course.courseList,
-    addToTrackListMsg: state.Course.addToTrackListMsg,
-    haveAccessToken: state.Auth.accessToken !== null,
+    courses: state.Tracking.courseList,
   }),
   dispatch => bindActionCreators({
-    ...CourseActions,
+    ...TrackingActions,
   }, dispatch)
 );
 
@@ -212,10 +210,7 @@ const reduxHook = connect(
 CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
-  addToTrackList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
-  haveAccessToken: T.bool.isRequired,
-  addToTrackListMsg: T.string,
   // Router
   history: T.shape({}).isRequired,
 };
