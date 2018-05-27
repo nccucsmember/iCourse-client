@@ -1,6 +1,7 @@
 import {
   CLEAR_STATE,
   GET_TRACKING_COURSES_LIST,
+  DELETE_COURSE,
 } from '../actions/Tracking.js';
 
 export default (state = {
@@ -17,6 +18,11 @@ export default (state = {
       return {
         ...state,
         courseList: action.course_list,
+      };
+    }
+    case DELETE_COURSE: {
+      return {
+        ...state,
       };
     }
     default:

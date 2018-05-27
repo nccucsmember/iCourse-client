@@ -130,16 +130,14 @@ class CourseList extends Component {
   render() {
     const {
       courses,
-      haveAccessToken,
-      addToTrackList,
-      addToTrackListMsg,
+      deleteCourse,
     } = this.props;
 
     return (
       <div style={styles.wrapper}>
         <div style={styles.container}>
           <div style={styles.h1Wrapper}>
-            <h1 style={styles.h1}>課程清單</h1>
+            <h1 style={styles.h1}>追蹤清單</h1>
           </div>
           <div style={styles.coursesWraper}>
             <div style={[styles.headerWrapper]}>
@@ -169,23 +167,11 @@ class CourseList extends Component {
                   <button
                     style={[styles.addButton, { flex: '2 2 140px' }]}
                     onClick={() => {
-                      if (!haveAccessToken) {
-                        const {
-                          history,
-                        } = this.props;
-                        if (window.confirm('尚未登入, 是否前往登入?')) {
-                          return history.replace('/login');
-                        }
-                        return null;
-                      }
-                      if (window.confirm('是否加入追蹤清單？')) {
-                        addToTrackList(course.subject_id);
-                      }
-                      if (addToTrackListMsg) {
-                        window.alert(addToTrackListMsg);
+                      if (window.confirm(`是否取消追蹤${course.subject_id}？`)) {
+                        deleteCourse(course.subject_id);
                       }
                       return null;
-                    }}>加入追蹤清單</button>
+                    }}>刪除</button>
                 </div>
               </div>
             ))}
@@ -210,6 +196,7 @@ const reduxHook = connect(
 CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
+  deleteCourse: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   // Router
   history: T.shape({}).isRequired,
