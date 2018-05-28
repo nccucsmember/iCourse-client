@@ -201,7 +201,6 @@ class CourseList extends Component {
 const reduxHook = connect(
   state => ({
     courses: state.Course.courseList,
-    addToTrackListMsg: state.Course.addToTrackListMsg,
     haveAccessToken: state.Auth.accessToken !== null,
   }),
   dispatch => bindActionCreators({
@@ -222,7 +221,6 @@ CourseList.propTypes = {
 
 CourseList.defaultProps = {
   courses: [],
-  addToTrackListMsg: '',
 };
 
 export default reduxHook(

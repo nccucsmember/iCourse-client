@@ -206,7 +206,6 @@ CourseList.propTypes = {
 
 CourseList.defaultProps = {
   courses: [],
-  addToTrackListMsg: '',
 };
 
 export default reduxHook(
