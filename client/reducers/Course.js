@@ -6,20 +6,20 @@ import {
 
 export default (state = {
   courseList: [],
-  addToTrackListMsg: '',
 }, action) => {
   switch (action.type) {
     case ADD_TO_TRACKLIST: {
+      if (action.message) {
+        action.callBack(action.message);
+      }
       return {
         ...state,
-        addToTrackListMsg: action.message,
       };
     }
     case CLEAR_STATE: {
       return {
         ...state,
         courseList: [],
-        addToTrackListMsg: '',
       };
     }
     case GET_COURSE_LIST: {

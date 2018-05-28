@@ -12,7 +12,7 @@ export function clearState() {
   };
 }
 
-export function addToTrackList(subjectId) {
+export function addToTrackList(subjectId, callBack) {
   return {
     [API_REQUEST]: {
       types: [
@@ -20,6 +20,12 @@ export function addToTrackList(subjectId) {
       ],
       method: 'PUT',
       entrypoint: `/managecourse/${subjectId}`,
+      headers: {
+        authorization: localStorage.authorization,
+      },
+      dispatchPayload: {
+        callBack,
+      },
     },
   };
 }

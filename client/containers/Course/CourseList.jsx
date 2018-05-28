@@ -134,7 +134,6 @@ class CourseList extends Component {
       courses,
       haveAccessToken,
       addToTrackList,
-      addToTrackListMsg,
     } = this.props;
 
     return (
@@ -182,10 +181,9 @@ class CourseList extends Component {
                         return null;
                       }
                       if (window.confirm('是否加入追蹤清單？')) {
-                        addToTrackList(course.subject_id);
-                      }
-                      if (addToTrackListMsg) {
-                        window.alert(addToTrackListMsg);
+                        addToTrackList(course.subject_id, (msg) => {
+                          window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`);
+                        });
                       }
                       return null;
                     }}>加入追蹤清單</button>
@@ -218,7 +216,6 @@ CourseList.propTypes = {
   addToTrackList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   haveAccessToken: T.bool.isRequired,
-  addToTrackListMsg: T.string,
   // Router
   history: T.shape({}).isRequired,
 };
