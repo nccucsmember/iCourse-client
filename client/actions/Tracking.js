@@ -25,7 +25,7 @@ export function getCourseList() {
   };
 }
 
-export function deleteCourse(subjectId) {
+export function deleteCourse(subjectId, callBack) {
   return {
     [API_REQUEST]: {
       types: [
@@ -35,6 +35,9 @@ export function deleteCourse(subjectId) {
       entrypoint: `/managecourse/${subjectId}`,
       headers: {
         authorization: localStorage.authorization,
+      },
+      dispatchPayload: {
+        callBack,
       },
     },
   };

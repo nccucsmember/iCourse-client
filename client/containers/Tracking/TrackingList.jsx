@@ -168,7 +168,9 @@ class CourseList extends Component {
                     style={[styles.addButton, { flex: '2 2 140px' }]}
                     onClick={() => {
                       if (window.confirm(`是否取消追蹤${course.subject_id}？`)) {
-                        deleteCourse(course.subject_id);
+                        deleteCourse(course.subject_id, (msg) => {
+                          window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
+                        });
                       }
                       return null;
                     }}>刪除</button>

@@ -21,6 +21,9 @@ export default (state = {
       };
     }
     case DELETE_COURSE: {
+      if (action.message) {
+        action.callBack(action.message);
+      }
       return {
         ...state,
       };
