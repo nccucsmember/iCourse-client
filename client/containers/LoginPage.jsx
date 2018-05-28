@@ -159,7 +159,7 @@ class LoginPage extends Component {
                   style={{
                     width: 300,
                   }}
-                  type="text"
+                  type="password"
                   component={Input}
                   name="password"
                   label="密碼：" />
