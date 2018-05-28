@@ -15,6 +15,7 @@ import SiteHeader from './SiteHeader.jsx';
 
 // Routes
 import CourseRoute from '../routes/Course.jsx';
+import TrackingRoute from '../routes/Tracking.jsx';
 
 import backgrounImage from '../static/img/star.png';
 
@@ -52,8 +53,9 @@ function ToLoginPage({
   if (haveAccessToken) {
     return (
       <Switch>
-        <Route path="/" component={CourseRoute} />
+        <Route path="/tracking" component={TrackingRoute} />
         <Route path="/course" component={CourseRoute} />
+        <Route path="/" component={CourseRoute} />
       </Switch>
     );
   }
@@ -66,9 +68,9 @@ function ToLoginPage({
           state: { next: '/select' },
         }} />
       <Redirect
-        from="/trace" to={{
+        from="/tracking" to={{
           pathname: '/login',
-          state: { next: '/trace' },
+          state: { next: '/tracking' },
         }} />
       <Route path="/" component={CourseRoute} />
     </Switch>

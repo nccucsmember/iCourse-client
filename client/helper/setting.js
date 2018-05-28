@@ -7,7 +7,7 @@ export const SITE_LINKS = [{
   name: '選課清單',
   subLinks: [],
 }, {
-  id: 'trace',
+  id: 'tracking',
   name: '追蹤清單',
   subLinks: [],
 }];
