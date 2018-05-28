@@ -38,6 +38,7 @@ export function deleteCourse(subjectId, callBack) {
       },
       dispatchPayload: {
         callBack,
+        subjectId,
       },
     },
   };
