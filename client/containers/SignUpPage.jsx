@@ -134,7 +134,7 @@ class SignUpPage extends Component {
       throw new SubmissionError({ password_confirmation: '未填寫' });
     }
 
-    return register(data, (errorMessage) => {
+    return register({user: ...data}, (errorMessage) => {
       this.setState({
         errorText: errorMessage,
       });
