@@ -29,6 +29,7 @@ import MainBoard from './containers/MainBoard.jsx';
 import Course from './reducers/Course.js';
 import Tracking from './reducers/Tracking.js';
 import Auth from './reducers/Auth.js';
+import Register from './reducers/Register.js';
 
 const history = createBrowserHistory();
 
@@ -38,6 +39,7 @@ export const store = createStore(
     Tracking,
     Course,
     Auth,
+    Register,
     form: formReducer,
     routing: routerReducer,
   }),

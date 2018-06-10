@@ -9,6 +9,7 @@ import {
 } from 'react-router';
 import { connect } from 'react-redux';
 import LoginPage from './LoginPage.jsx';
+import SignUpPage from './SignUpPage.jsx';
 
 // Main
 import SiteHeader from './SiteHeader.jsx';
@@ -107,6 +108,7 @@ class MainBoard extends ReactComponent {
             <div style={styles.content}>
               <Switch>
                 <Route path="/login" component={LoginPage} />
+                <Route path="/register" component={SignUpPage} />
                 <Route path="/" component={ClientRoute} />
               </Switch>
             </div>
