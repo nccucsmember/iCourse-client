@@ -20,7 +20,7 @@ import Theme from '../styles/Theme';
 
 import cover from '../static/img/logo.png';
 
-const FORM_NAME = 'LOGIN_FROM';
+const FORM_NAME = 'REGISTER_FROM';
 
 const styles = {
   wrapper: {
