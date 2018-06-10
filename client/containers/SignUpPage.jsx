@@ -130,8 +130,14 @@ class SignUpPage extends Component {
     if (!data.password) {
       throw new SubmissionError({ password: '未填寫' });
     }
+    if (data.password.length <= 6) {
+      throw new SubmissionError({ password: '密碼太短' });
+    }
     if (!data.password_confirmation) {
       throw new SubmissionError({ password_confirmation: '未填寫' });
+    }
+    if (data.password !== data.password_confirmation) {
+      throw new SubmissionError({ password_confirmation: '與密碼不相符' });
     }
 
     const submitData = {
