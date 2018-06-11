@@ -66,8 +66,11 @@ class CourseDetail extends Component {
   componentWillMount() {
     const {
       courseId,
+      getCourseDetail,
+      getComments,
     } = this.props;
-    this.props.getCourseDetail(courseId);
+    getCourseDetail(courseId);
+    getComments(courseId);
   }
 
   componentWillReceiveProps() {
@@ -81,8 +84,11 @@ class CourseDetail extends Component {
     const {
       eventHandler,
       course,
+      comments,
     } = this.props;
-    console.log(course)
+    if (!course) return null;
+    console.log(course);
+    console.log(comments);
     return (
       <div style={styles.wrapper}>
         <div style={styles.container}>
@@ -104,13 +110,16 @@ class CourseDetail extends Component {
 
 CourseDetail.defaultProps = {
   course: null,
+  comments: [],
 };
 
 CourseDetail.propTypes = {
   // redux
   getCourseDetail: T.func.isRequired,
+  getComments: T.func.isRequired,
   clearState: T.func.isRequired,
   course: T.shape({}),
+  comments: T.arrayOf(T.shape({})),
   // react
   eventHandler: T.shape({
     onClick: T.func.isRequired,
@@ -121,6 +130,7 @@ CourseDetail.propTypes = {
 const reduxHook = connect(
   state => ({
     course: state.Detail.courseInfo,
+    comments: state.Detail.comments,
   }),
   dispatch => bindActionCreators({
     ...detailActions,
