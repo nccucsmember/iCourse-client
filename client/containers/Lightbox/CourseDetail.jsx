@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { PropTypes as T } from 'prop-types';
 
+import * as detailActions from '../../actions/Detail.js';
+
 const styles = {
   wrapper: {
     position: 'fixed',
@@ -62,16 +64,25 @@ class CourseDetail extends Component {
   }
 
   componentWillMount() {
+    const {
+      courseId,
+    } = this.props;
+    this.props.getCourseDetail(courseId);
   }
 
   componentWillReceiveProps() {
   }
 
+  componentWillUnmount() {
+    this.props.clearState();
+  }
+
   render() {
     const {
       eventHandler,
+      course,
     } = this.props;
-
+    console.log(course)
     return (
       <div style={styles.wrapper}>
         <div style={styles.container}>
@@ -92,17 +103,27 @@ class CourseDetail extends Component {
 }
 
 CourseDetail.defaultProps = {
+  course: null,
 };
 
 CourseDetail.propTypes = {
+  // redux
+  getCourseDetail: T.func.isRequired,
+  clearState: T.func.isRequired,
+  course: T.shape({}),
+  // react
   eventHandler: T.shape({
     onClick: T.func.isRequired,
   }).isRequired,
+  courseId: T.string.isRequired,
 };
 
 const reduxHook = connect(
-  null,
+  state => ({
+    course: state.Detail.courseInfo,
+  }),
   dispatch => bindActionCreators({
+    ...detailActions,
   }, dispatch),
 );
 

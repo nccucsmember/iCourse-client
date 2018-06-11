@@ -120,6 +120,7 @@ class CourseList extends Component {
     super(props);
     this.state = {
       showLightbox: false,
+      courseId: '',
     };
   }
 
@@ -173,6 +174,7 @@ class CourseList extends Component {
                   <button
                     onClick={() => {
                       this.setState({
+                        courseId: course.subject_id,
                         showLightbox: true,
                       });
                     }}
@@ -197,6 +199,7 @@ class CourseList extends Component {
         {
           this.state.showLightbox &&
           <CourseDetail
+            courseId={this.state.courseId}
             eventHandler={{
               onClick: () => {
                 this.setState({

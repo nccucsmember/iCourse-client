@@ -30,12 +30,14 @@ import Course from './reducers/Course.js';
 import Tracking from './reducers/Tracking.js';
 import Auth from './reducers/Auth.js';
 import Register from './reducers/Register.js';
+import Detail from './reducers/Detail.js';
 
 const history = createBrowserHistory();
 
 
 export const store = createStore(
   combineReducers({
+    Detail,
     Tracking,
     Course,
     Auth,
