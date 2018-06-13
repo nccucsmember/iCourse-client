@@ -130,7 +130,7 @@ class SelectList extends Component {
   render() {
     const {
       courses,
-      // deleteCourse,
+      deleteCourse,
     } = this.props;
 
     return (
@@ -167,11 +167,11 @@ class SelectList extends Component {
                   <button
                     style={[styles.addButton, { flex: '2 2 140px' }]}
                     onClick={() => {
-                      // if (window.confirm(`是否取消追蹤${course.subject_id}？`)) {
-                      //   deleteCourse(course.subject_id, (msg) => {
-                      //     window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
-                      //   });
-                      // }
+                      if (window.confirm(`是否取消選取課程${course.subject_id}？`)) {
+                        deleteCourse(course.subject_id, (msg) => {
+                          window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
+                        });
+                      }
                       return null;
                     }}>刪除</button>
                 </div>
@@ -198,7 +198,7 @@ const reduxHook = connect(
 SelectList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
-  // deleteCourse: T.func.isRequired,
+  deleteCourse: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   // Router
   history: T.shape({}).isRequired,
