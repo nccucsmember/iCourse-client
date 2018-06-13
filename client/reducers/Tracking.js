@@ -1,14 +1,20 @@
 import {
-  CLEAR_STATE,
+  CLEAR_TRACK_STATE,
   GET_TRACKING_COURSES_LIST,
   DELETE_COURSE,
+  ADD_TO_SELECTLIST,
 } from '../actions/Tracking.js';
 
 export default (state = {
   courseList: [],
 }, action) => {
   switch (action.type) {
-    case CLEAR_STATE: {
+    case ADD_TO_SELECTLIST: {
+      return {
+        ...state,
+      };
+    }
+    case CLEAR_TRACK_STATE: {
       return {
         ...state,
         courseList: [],

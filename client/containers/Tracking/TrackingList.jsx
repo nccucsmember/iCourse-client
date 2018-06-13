@@ -44,7 +44,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: 80,
+    height: 100,
     margin: 8,
     textDecoration: 'none',
     backgroundColor: 'rgb(255, 255, 255)',
@@ -101,16 +101,33 @@ const styles = {
     cursor: 'pointer',
   },
   addButton: {
+    width: '80%',
     margin: 5,
     fontSize: 14,
     fontWeight: 500,
     borderRadius: 5,
     padding: '6px 24px',
-    color: 'rgba(38, 62, 208, 0.9)',
-    border: '2px solid rgba(38, 62, 208, 0.9)',
+    color: 'rgba(38, 62, 208, 0.7)',
+    border: '2px solid rgba(38, 62, 208, 0.7)',
     backgroundColor: 'transparent',
     outline: '0px',
     cursor: 'pointer',
+  },
+  deleteButton: {
+    width: '80%',
+    margin: 5,
+    fontSize: 14,
+    fontWeight: 500,
+    borderRadius: 5,
+    padding: '6px 24px',
+    color: '#3a9be8',
+    border: '2px solid #3a9be8',
+    backgroundColor: 'transparent',
+    outline: '0px',
+    cursor: 'pointer',
+  },
+  buttonsWrapper: {
+    margin: 15,
   },
 };
 
@@ -131,6 +148,7 @@ class CourseList extends Component {
     const {
       courses,
       deleteCourse,
+      addToSelectList,
     } = this.props;
 
     return (
@@ -144,10 +162,10 @@ class CourseList extends Component {
               <span style={[styles.header, { flex: '1 1 50px' }]}>學期</span>
               <span style={[styles.header, { flex: '2 2 100px' }]}>課程名稱</span>
               <span style={[styles.header, { flex: '2 2 100px' }]}>任課教師</span>
-              <span style={[styles.header, { flex: '2 2 100px' }]}>教室</span>
+              <span style={[styles.header, { flex: '2 2 30px' }]}>教室</span>
               <span style={[styles.header, { flex: '1.2 1.2 60px' }]}>開課院系</span>
               <span style={[styles.header, { flex: '1 1 50px' }]}>修別</span>
-              <span style={[styles.header, { flex: '4 4 200px' }]}>上課時間</span>
+              <span style={[styles.header, { flex: '4 4 100px' }]}>上課時間</span>
               <span style={[styles.buttonWraper, { flex: '2 2 100px' }]}>更多資訊</span>
               <span style={[styles.buttonWraper, { flex: '2 2 100px' }]}>操作</span>
             </div>
@@ -155,7 +173,7 @@ class CourseList extends Component {
               <div key={course.course_id} style={styles.courseWrapper}>
                 <div style={[styles.course, index % 2 !== 0 ? styles.courseRowEven : null]}>
                   <span style={[styles.text, { flex: '1 1 50px' }]}>{course.semester || ''}</span>
-                  <span style={[styles.text, { flex: '2 2 100px' }]}>{course.course_name_ch || ''}</span>
+                  <span style={[styles.text, { flex: '2 2 150px' }]}>{course.course_name_ch || ''}</span>
                   <span style={[styles.text, { flex: '2 2 100px' }]}>{course.teacher || ''}</span>
                   <span style={[styles.text, { flex: '2 2 100px' }]}>{course.location || ''}</span>
                   <span style={[styles.text, { flex: '1.2 1.2 60px' }]}>{course.department || ''}</span>
@@ -164,16 +182,28 @@ class CourseList extends Component {
                     {`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}
                   </span>
                   <button style={[styles.detailButton, { flex: '2 2 100px' }]}>more</button>
-                  <button
-                    style={[styles.addButton, { flex: '2 2 140px' }]}
-                    onClick={() => {
-                      if (window.confirm(`是否取消追蹤${course.subject_id}？`)) {
-                        deleteCourse(course.subject_id, (msg) => {
-                          window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
-                        });
-                      }
-                      return null;
-                    }}>刪除</button>
+                  <div style={[styles.buttonsWrapper, { flex: '2 2 180px' }]}>
+                    <button
+                      style={[styles.deleteButton]}
+                      onClick={() => {
+                        if (window.confirm(`是否取消追蹤${course.subject_id}？`)) {
+                          deleteCourse(course.subject_id, (msg) => {
+                            window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
+                          });
+                        }
+                        return null;
+                      }}>刪除</button>
+                    <button
+                      style={[styles.addButton]}
+                      onClick={() => {
+                        if (window.confirm(`是否將${course.subject_id}加到選課清單？`)) {
+                          addToSelectList(course.subject_id, (msg) => {
+                            window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
+                          });
+                        }
+                        return null;
+                      }}>加入選課清單</button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -199,6 +229,7 @@ CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
   deleteCourse: T.func.isRequired,
+  addToSelectList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   // Router
   history: T.shape({}).isRequired,

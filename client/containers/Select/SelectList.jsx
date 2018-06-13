@@ -187,7 +187,7 @@ class SelectList extends Component {
 
 const reduxHook = connect(
   state => ({
-    courses: state.Tracking.courseList,
+    courses: state.Select.courseList,
   }),
   dispatch => bindActionCreators({
     ...SelectActions,
