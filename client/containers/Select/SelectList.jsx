@@ -5,7 +5,7 @@ import { PropTypes as T } from 'prop-types';
 import radium from 'radium';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import * as SelectActions from '../../actions/Select.js';
+import * as SelectActions from '../../actions/Select.js';
 
 import Theme from '../../styles/Theme.js';
 // components
@@ -118,10 +118,10 @@ const styles = {
 class SelectList extends Component {
   componentWillMount() {
     const {
-      // getCourseList,
+      getCourseList,
     } = this.props;
 
-    // getCourseList();
+    getCourseList();
   }
 
   componentWillReceiveProps() {
@@ -190,14 +190,14 @@ const reduxHook = connect(
     courses: state.Tracking.courseList,
   }),
   dispatch => bindActionCreators({
-    // ...SelectActions,
+    ...SelectActions,
   }, dispatch)
 );
 
 
 SelectList.propTypes = {
   // redux
-  // getCourseList: T.func.isRequired,
+  getCourseList: T.func.isRequired,
   // deleteCourse: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   // Router
