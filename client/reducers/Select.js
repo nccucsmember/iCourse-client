@@ -2,12 +2,19 @@ import {
   CLEAR_SELECT_STATE,
   GET_SELECT_COURSES_LIST,
   DELETE_COURSE,
+  TOGGLE_SELECT_STUTUS,
 } from '../actions/Select.js';
 
 export default (state = {
   courseList: [],
 }, action) => {
   switch (action.type) {
+    case TOGGLE_SELECT_STUTUS: {
+      return {
+        ...state,
+        courseList: action.chosen_courses_list,
+      };
+    }
     case CLEAR_SELECT_STATE: {
       return {
         ...state,

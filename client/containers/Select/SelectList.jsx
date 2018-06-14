@@ -130,7 +130,7 @@ class SelectList extends Component {
   render() {
     const {
       courses,
-      deleteCourse,
+      toggleSelectStatus,
     } = this.props;
 
     return (
@@ -168,7 +168,7 @@ class SelectList extends Component {
                     style={[styles.addButton, { flex: '2 2 140px' }]}
                     onClick={() => {
                       if (window.confirm(`是否取消選取課程${course.subject_id}？`)) {
-                        deleteCourse(course.subject_id, (msg) => {
+                        toggleSelectStatus(course.subject_id, (msg) => {
                           window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
                         });
                       }
@@ -198,7 +198,7 @@ const reduxHook = connect(
 SelectList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
-  deleteCourse: T.func.isRequired,
+  toggleSelectStatus: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   // Router
   history: T.shape({}).isRequired,
