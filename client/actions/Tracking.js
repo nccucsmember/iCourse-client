@@ -3,6 +3,7 @@ import { API_REQUEST } from 'redux-middleware-fetch';
 export const GET_TRACKING_COURSES_LIST = 'GET_TRACKING_COURSES_LIST';
 export const CLEAR_TRACK_STATE = 'CLEAR_TRACK_STATE';
 export const DELETE_COURSE = 'DELETE_COURSE';
+export const ADD_TO_SELECT_LIST = 'ADD_TO_SELECT_LIST';
 
 
 export function clearState() {
@@ -44,3 +45,21 @@ export function deleteCourse(subjectId, callBack) {
   };
 }
 
+export function addToSelectList(subjectId, callBack) {
+  return {
+    [API_REQUEST]: {
+      types: [
+        ADD_TO_SELECT_LIST,
+      ],
+      method: 'PUT',
+      entrypoint: `/choose/${subjectId}`,
+      headers: {
+        authorization: localStorage.authorization,
+      },
+      dispatchPayload: {
+        subjectId,
+        callBack,
+      },
+    },
+  };
+}

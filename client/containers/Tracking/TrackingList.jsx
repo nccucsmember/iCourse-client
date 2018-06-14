@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as TrackingActions from '../../actions/Tracking.js';
 
-import { toggleSelectStatus } from '../../actions/Select.js';
-
 import Theme from '../../styles/Theme.js';
 // components
 
@@ -150,6 +148,7 @@ class CourseList extends Component {
     const {
       courses,
       deleteCourse,
+      addToSelectList,
     } = this.props;
 
     return (
@@ -198,7 +197,7 @@ class CourseList extends Component {
                       style={[styles.addButton]}
                       onClick={() => {
                         if (window.confirm(`是否將${course.subject_id}加到選課清單？`)) {
-                          this.props.toggleSelectStatus(course.subject_id, (msg) => {
+                          addToSelectList(course.subject_id, (msg) => {
                             window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
                           });
                         }
@@ -222,7 +221,6 @@ const reduxHook = connect(
   }),
   dispatch => bindActionCreators({
     ...TrackingActions,
-    toggleSelectStatus,
   }, dispatch)
 );
 
@@ -231,7 +229,7 @@ CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
   deleteCourse: T.func.isRequired,
-  toggleSelectStatus: T.func.isRequired,
+  addToSelectList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   // Router
   history: T.shape({}).isRequired,
