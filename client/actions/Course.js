@@ -1,13 +1,20 @@
 import { API_REQUEST } from 'redux-middleware-fetch';
 import qs from 'querystring';
 
-export const GET_COURSE_LIST = 'GET_COURSE_LIST';
-export const CLEAR_STATE = 'CLEAR_STATE';
+export const GET_COURSE_LIST = Symbol('GET_COURSE_LIST');
+export const CLEAR_COURSELIST_STATE = Symbol('CLEAR_COURSELIST_STATE');
+export const SAVE_SUBMIT_DATA = Symbol('SAVE_SUBMIT_DATA');
 
+export function saveSubmitData(data) {
+  return {
+    type: SAVE_SUBMIT_DATA,
+    data,
+  };
+}
 
 export function clearState() {
   return {
-    type: CLEAR_STATE,
+    type: CLEAR_COURSELIST_STATE,
   };
 }
 

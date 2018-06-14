@@ -136,15 +136,20 @@ class CourseList extends Component {
     getCourseList();
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tempQuery !== this.props.tempQuery) {
+      this.setState({
+        cursor: 0,
+      });
+    }
   }
 
   render() {
     const {
       courses,
       getCourseList,
+      tempQuery,
     } = this.props;
-    console.log(this.state)
 
     return (
       <div style={styles.wrapper}>
@@ -184,13 +189,13 @@ class CourseList extends Component {
             ))}
           </div>
           <Pagination
-            disableForward={this.state.cursor > this.props.count / LIST_LIMITS}
+            disableForward={this.state.cursor > this.props.count}
             disableBackward={this.state.cursor <= 0}
             forward={() => {
               this.setState({
                 cursor: this.state.cursor + LIST_LIMITS,
               }, () => {
-                getCourseList(null, {
+                getCourseList(tempQuery, {
                   limit: 10,
                   offset: this.state.cursor,
                 });
@@ -199,7 +204,7 @@ class CourseList extends Component {
             backward={() => {
               this.setState({
                 cursor: this.state.cursor - LIST_LIMITS,
-              }, () => getCourseList(null, {
+              }, () => getCourseList(tempQuery, {
                 limit: 10,
                 offset: this.state.cursor,
               }));
@@ -215,6 +220,7 @@ const reduxHook = connect(
   state => ({
     courses: state.Course.courseList,
     count: state.Course.count,
+    tempQuery: state.Course.submittedData,
   }),
   dispatch => bindActionCreators({
     ...CourseActions,
@@ -227,11 +233,13 @@ CourseList.propTypes = {
   getCourseList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   count: T.number,
+  tempQuery: T.shape({}),
 };
 
 CourseList.defaultProps = {
   courses: [],
   count: 0,
+  tempQuery: null,
 };
 
 export default reduxHook(

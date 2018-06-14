@@ -61,13 +61,16 @@ class CourseSearcher extends Component {
   submit(data) {
     const {
       getCourseList,
+      saveSubmitData,
     } = this.props;
 
-    getCourseList({
+    const submitData = {
       ...data,
       course_name_ch: data.keyword,
       dept: data.dept === '-1' ? null : data.dept,
-    });
+    };
+    getCourseList(submitData);
+    saveSubmitData(submitData);
   }
 
   render() {
@@ -135,6 +138,7 @@ class CourseSearcher extends Component {
 CourseSearcher.propTypes = {
   handleSubmit: T.func.isRequired,
   getCourseList: T.func.isRequired,
+  saveSubmitData: T.func.isRequired,
 };
 
 CourseSearcher.defaultProps = {
