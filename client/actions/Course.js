@@ -17,7 +17,6 @@ export function getCourseList(
     limit: 10,
     offset: 0,
   }) {
-  console.log(payload);  
   return {
     [API_REQUEST]: {
       types: [

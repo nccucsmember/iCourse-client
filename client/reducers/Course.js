@@ -5,6 +5,7 @@ import {
 
 export default (state = {
   courseList: [],
+  count: 0,
 }, action) => {
   switch (action.type) {
     case CLEAR_STATE: {
@@ -16,7 +17,8 @@ export default (state = {
     case GET_COURSE_LIST: {
       return {
         ...state,
-        courseList: action.list,
+        courseList: action.course_list,
+        count: action.count,
       };
     }
     default:

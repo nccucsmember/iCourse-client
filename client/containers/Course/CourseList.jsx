@@ -144,7 +144,7 @@ class CourseList extends Component {
       courses,
       getCourseList,
     } = this.props;
-    console.log(this.state);
+    console.log(this.state)
 
     return (
       <div style={styles.wrapper}>
@@ -184,13 +184,14 @@ class CourseList extends Component {
             ))}
           </div>
           <Pagination
-            disableForward={this.state.cursor > 100}
+            disableForward={this.state.cursor > this.props.count / LIST_LIMITS}
             disableBackward={this.state.cursor <= 0}
             forward={() => {
               this.setState({
                 cursor: this.state.cursor + LIST_LIMITS,
               }, () => {
-                getCourseList({
+                getCourseList(null, {
+                  limit: 10,
                   offset: this.state.cursor,
                 });
               });
@@ -198,7 +199,8 @@ class CourseList extends Component {
             backward={() => {
               this.setState({
                 cursor: this.state.cursor - LIST_LIMITS,
-              }, () => getCourseList({
+              }, () => getCourseList(null, {
+                limit: 10,
                 offset: this.state.cursor,
               }));
             }} />
@@ -212,6 +214,7 @@ class CourseList extends Component {
 const reduxHook = connect(
   state => ({
     courses: state.Course.courseList,
+    count: state.Course.count,
   }),
   dispatch => bindActionCreators({
     ...CourseActions,
@@ -223,10 +226,12 @@ CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
+  count: T.number,
 };
 
 CourseList.defaultProps = {
   courses: [],
+  count: 0,
 };
 
 export default reduxHook(
