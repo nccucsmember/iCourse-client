@@ -1,9 +1,9 @@
 import { API_REQUEST } from 'redux-middleware-fetch';
 import qs from 'querystring';
 
-export const GET_COURSE_LIST = 'GET_COURSE_LIST';
-export const CLEAR_STATE = 'CLEAR_STATE';
-export const ADD_TO_TRACKLIST = 'ADD_TO_TRACKLIST';
+export const GET_COURSE_LIST = Symbol('GET_COURSE_LIST');
+export const CLEAR_STATE = Symbol('CLEAR_STATE');
+export const ADD_TO_TRACKLIST = Symbol('ADD_TO_TRACKLIST');
 
 
 export function clearState() {

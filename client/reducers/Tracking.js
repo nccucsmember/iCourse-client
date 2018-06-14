@@ -1,7 +1,7 @@
 import {
   CLEAR_TRACK_STATE,
   GET_TRACKING_COURSES_LIST,
-  DELETE_COURSE,
+  DELETE_TRACKING_COURSE,
   ADD_TO_SELECT_LIST,
 } from '../actions/Tracking.js';
 
@@ -35,7 +35,7 @@ export default (state = {
         courseList: action.course_list,
       };
     }
-    case DELETE_COURSE: {
+    case DELETE_TRACKING_COURSE: {
       if (action.message) {
         action.callBack(action.message);
       }

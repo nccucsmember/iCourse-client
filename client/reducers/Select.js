@@ -1,7 +1,7 @@
 import {
   CLEAR_SELECT_STATE,
   GET_SELECT_COURSES_LIST,
-  DELETE_COURSE,
+  DELETE_SELECT_COURSE,
   TOGGLE_SELECT_STUTUS,
 } from '../actions/Select.js';
 
@@ -27,7 +27,7 @@ export default (state = {
         courseList: action.chosen_courses_list,
       };
     }
-    case DELETE_COURSE: {
+    case DELETE_SELECT_COURSE: {
       if (action.message) {
         action.callBack(action.message);
       }
