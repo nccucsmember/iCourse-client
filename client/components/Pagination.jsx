@@ -12,7 +12,8 @@ const styles = {
 
 
 class Pagination extends Component {
-  componentWillMount() {
+  constructor() {
+    super();
     this.state = {
       from: 1,
       to: 10,

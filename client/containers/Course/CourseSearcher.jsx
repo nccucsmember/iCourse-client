@@ -65,6 +65,8 @@ class CourseSearcher extends Component {
 
     getCourseList({
       ...data,
+      teacher: data.keyword,
+      course_name_ch: data.keyword,
       dept: data.dept === '-1' ? null : data.dept,
     });
   }

@@ -11,43 +11,22 @@ export function clearState() {
   };
 }
 
-export function getCourseList(query = null) {
-  if (query) {
-    const {
-      type,
-      limit,
-      dept,
-      keyword,
-      weekday,
-      offset,
-    } = query;
-
-    const params = {
-      limit: 10,
-    };
-    if (type) { params.type = type; }
-    if (dept) { params.dept = dept; }
-    if (weekday) { params.weekday = weekday; }
-    if (limit) { params.limit = limit; }
-    if (keyword) { params.zh = keyword; }
-    if (offset) { params.offset = offset; }
-
-    return {
-      [API_REQUEST]: {
-        types: [
-          GET_COURSE_LIST,
-        ],
-        entrypoint: `/course?${qs.stringify(params)}`,
-      },
-    };
-  }
-
+export function getCourseList(
+  payload = null,
+  params = {
+    limit: 10,
+    offset: 0,
+  }) {
+  console.log(payload);  
   return {
     [API_REQUEST]: {
       types: [
         GET_COURSE_LIST,
       ],
-      entrypoint: '/course?limit=10',
+      json: true,
+      body: payload,
+      method: 'POST',
+      entrypoint: `/course/search?${qs.stringify(params)}`,
     },
   };
 }
