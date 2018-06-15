@@ -11,6 +11,7 @@ import Theme from '../../styles/Theme.js';
 import CourseSearcher from './CourseSearcher.jsx';
 
 // components
+import Pagination from '../../components/Pagination.jsx';
 
 
 // Style
@@ -46,7 +47,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: 80,
+    minHeight: 80,
     margin: 8,
     textDecoration: 'none',
     backgroundColor: 'rgb(255, 255, 255)',
@@ -117,7 +118,16 @@ const styles = {
 };
 
 
+const LIST_LIMITS = 10;
+
 class CourseList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cursor: 0,
+    };
+  }
+
   componentWillMount() {
     const {
       getCourseList,
@@ -126,12 +136,20 @@ class CourseList extends Component {
     getCourseList();
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tempQuery !== this.props.tempQuery) {
+      this.setState({
+        cursor: 0,
+      });
+    }
   }
 
   render() {
     const {
       courses,
+      getCourseList,
+      tempQuery,
+      count,
       haveAccessToken,
       addToTrackList,
     } = this.props;
@@ -191,6 +209,40 @@ class CourseList extends Component {
               </div>
             ))}
           </div>
+          <Pagination
+            total={count}
+            limit={LIST_LIMITS}
+            jumpToPage={(p) => {
+              this.setState({
+                cursor: (p - 1) * LIST_LIMITS,
+              }, () => {
+                getCourseList(tempQuery, {
+                  limit: 10,
+                  offset: this.state.cursor,
+                });
+              });
+            }}
+            currentCursor={this.state.cursor}
+            disableForward={this.state.cursor > this.props.count}
+            disableBackward={this.state.cursor <= 0}
+            forward={() => {
+              this.setState({
+                cursor: this.state.cursor + LIST_LIMITS,
+              }, () => {
+                getCourseList(tempQuery, {
+                  limit: 10,
+                  offset: this.state.cursor,
+                });
+              });
+            }}
+            backward={() => {
+              this.setState({
+                cursor: this.state.cursor - LIST_LIMITS,
+              }, () => getCourseList(tempQuery, {
+                limit: 10,
+                offset: this.state.cursor,
+              }));
+            }} />
         </div>
       </div>
     );
@@ -201,6 +253,8 @@ class CourseList extends Component {
 const reduxHook = connect(
   state => ({
     courses: state.Course.courseList,
+    count: state.Course.count,
+    tempQuery: state.Course.submittedData,
     haveAccessToken: state.Auth.accessToken !== null,
   }),
   dispatch => bindActionCreators({
@@ -214,6 +268,8 @@ CourseList.propTypes = {
   getCourseList: T.func.isRequired,
   addToTrackList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
+  count: T.number,
+  tempQuery: T.shape({}),
   haveAccessToken: T.bool.isRequired,
   // Router
   history: T.shape({}).isRequired,
@@ -221,6 +277,8 @@ CourseList.propTypes = {
 
 CourseList.defaultProps = {
   courses: [],
+  count: 0,
+  tempQuery: null,
 };
 
 export default reduxHook(
