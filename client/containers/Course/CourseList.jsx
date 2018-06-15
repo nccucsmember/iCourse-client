@@ -241,8 +241,8 @@ class CourseList extends Component {
               });
             }}
             currentCursor={this.state.cursor}
-            disableForward={this.state.cursor > this.props.count}
-            disableBackward={this.state.cursor <= 0}
+            disableForward={this.state.cursor > this.props.count || this.props.count < LIST_LIMITS}
+            disableBackward={this.state.cursor <= 0 || this.props.count < LIST_LIMITS}
             forward={() => {
               this.setState({
                 cursor: this.state.cursor + LIST_LIMITS,
