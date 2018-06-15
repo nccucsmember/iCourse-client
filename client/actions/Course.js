@@ -4,6 +4,7 @@ import qs from 'querystring';
 export const GET_COURSE_LIST = Symbol('GET_COURSE_LIST');
 export const CLEAR_COURSELIST_STATE = Symbol('CLEAR_COURSELIST_STATE');
 export const SAVE_SUBMIT_DATA = Symbol('SAVE_SUBMIT_DATA');
+export const ADD_TO_TRACKLIST = Symbol('ADD_TO_TRACKLIST');
 
 export function saveSubmitData(data) {
   return {
