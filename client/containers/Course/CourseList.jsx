@@ -47,7 +47,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: 80,
+    minHeight: 80,
     margin: 8,
     textDecoration: 'none',
     backgroundColor: 'rgb(255, 255, 255)',
@@ -149,6 +149,7 @@ class CourseList extends Component {
       courses,
       getCourseList,
       tempQuery,
+      count,
     } = this.props;
 
     return (
@@ -189,6 +190,19 @@ class CourseList extends Component {
             ))}
           </div>
           <Pagination
+            total={count}
+            limit={LIST_LIMITS}
+            jumpToPage={(p) => {
+              this.setState({
+                cursor: (p - 1) * LIST_LIMITS,
+              }, () => {
+                getCourseList(tempQuery, {
+                  limit: 10,
+                  offset: this.state.cursor,
+                });
+              });
+            }}
+            currentCursor={this.state.cursor}
             disableForward={this.state.cursor > this.props.count}
             disableBackward={this.state.cursor <= 0}
             forward={() => {
