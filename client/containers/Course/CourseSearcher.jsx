@@ -95,9 +95,9 @@ class CourseSearcher extends Component {
                   width: 150,
                 }}
                 type="text"
-                placeholder="教師名稱"
+                placeholder="任課教師"
                 component={Input}
-                label="教師名稱"
+                label="任課教師"
                 name="teacher" />
             </div>
             <div style={styles.inputGroup}>
