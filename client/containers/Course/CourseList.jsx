@@ -158,6 +158,10 @@ class CourseList extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearState();
+  }
+
   render() {
     const {
       courses,
@@ -280,6 +284,7 @@ const reduxHook = connect(
 CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
+  clearState: T.func.isRequired,
   addToTrackList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   count: T.number,
