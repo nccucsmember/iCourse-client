@@ -2,6 +2,7 @@ import {
   CLEAR_COURSELIST_STATE,
   GET_COURSE_LIST,
   SAVE_SUBMIT_DATA,
+  ADD_TO_TRACKLIST,
 } from '../actions/Course.js';
 
 export default (state = {
@@ -14,6 +15,14 @@ export default (state = {
       return {
         ...state,
         submittedData: action.data,
+      };
+    }
+    case ADD_TO_TRACKLIST: {
+      if (action.message) {
+        action.callBack(action.message);
+      }
+      return {
+        ...state,
       };
     }
     case CLEAR_COURSELIST_STATE: {

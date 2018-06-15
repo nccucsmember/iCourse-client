@@ -18,6 +18,24 @@ export function clearState() {
   };
 }
 
+export function addToTrackList(subjectId, callBack) {
+  return {
+    [API_REQUEST]: {
+      types: [
+        ADD_TO_TRACKLIST,
+      ],
+      method: 'PUT',
+      entrypoint: `/managecourse/${subjectId}`,
+      headers: {
+        authorization: localStorage.authorization,
+      },
+      dispatchPayload: {
+        callBack,
+      },
+    },
+  };
+}
+
 export function getCourseList(
   payload = null,
   params = {

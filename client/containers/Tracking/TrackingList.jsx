@@ -5,13 +5,10 @@ import { PropTypes as T } from 'prop-types';
 import radium from 'radium';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as CourseActions from '../../actions/Course.js';
+import * as TrackingActions from '../../actions/Tracking.js';
 
 import Theme from '../../styles/Theme.js';
-import CourseSearcher from './CourseSearcher.jsx';
-
 // components
-import Pagination from '../../components/Pagination.jsx';
 
 
 // Style
@@ -47,7 +44,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    minHeight: 80,
+    height: 80,
     margin: 8,
     textDecoration: 'none',
     backgroundColor: 'rgb(255, 255, 255)',
@@ -118,16 +115,7 @@ const styles = {
 };
 
 
-const LIST_LIMITS = 10;
-
 class CourseList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cursor: 0,
-    };
-  }
-
   componentWillMount() {
     const {
       getCourseList,
@@ -136,31 +124,21 @@ class CourseList extends Component {
     getCourseList();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.tempQuery !== this.props.tempQuery) {
-      this.setState({
-        cursor: 0,
-      });
-    }
+  componentWillReceiveProps() {
   }
 
   render() {
     const {
       courses,
-      getCourseList,
-      tempQuery,
-      count,
-      haveAccessToken,
-      addToTrackList,
+      deleteCourse,
     } = this.props;
 
     return (
       <div style={styles.wrapper}>
         <div style={styles.container}>
           <div style={styles.h1Wrapper}>
-            <h1 style={styles.h1}>課程清單</h1>
+            <h1 style={styles.h1}>追蹤清單</h1>
           </div>
-          <CourseSearcher />
           <div style={styles.coursesWraper}>
             <div style={[styles.headerWrapper]}>
               <span style={[styles.header, { flex: '1 1 50px' }]}>學期</span>
@@ -189,60 +167,17 @@ class CourseList extends Component {
                   <button
                     style={[styles.addButton, { flex: '2 2 140px' }]}
                     onClick={() => {
-                      if (!haveAccessToken) {
-                        const {
-                          history,
-                        } = this.props;
-                        if (window.confirm('尚未登入, 是否前往登入?')) {
-                          return history.replace('/login');
-                        }
-                        return null;
-                      }
-                      if (window.confirm('是否加入追蹤清單？')) {
-                        addToTrackList(course.subject_id, (msg) => {
-                          window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`);
+                      if (window.confirm(`是否取消追蹤${course.subject_id}？`)) {
+                        deleteCourse(course.subject_id, (msg) => {
+                          window.alert(`${course.course_name_ch}(${course.subject_id}):\n${msg}`)
                         });
                       }
                       return null;
-                    }}>加入追蹤清單</button>
+                    }}>刪除</button>
                 </div>
               </div>
             ))}
           </div>
-          <Pagination
-            total={count}
-            limit={LIST_LIMITS}
-            jumpToPage={(p) => {
-              this.setState({
-                cursor: (p - 1) * LIST_LIMITS,
-              }, () => {
-                getCourseList(tempQuery, {
-                  limit: 10,
-                  offset: this.state.cursor,
-                });
-              });
-            }}
-            currentCursor={this.state.cursor}
-            disableForward={this.state.cursor > this.props.count}
-            disableBackward={this.state.cursor <= 0}
-            forward={() => {
-              this.setState({
-                cursor: this.state.cursor + LIST_LIMITS,
-              }, () => {
-                getCourseList(tempQuery, {
-                  limit: 10,
-                  offset: this.state.cursor,
-                });
-              });
-            }}
-            backward={() => {
-              this.setState({
-                cursor: this.state.cursor - LIST_LIMITS,
-              }, () => getCourseList(tempQuery, {
-                limit: 10,
-                offset: this.state.cursor,
-              }));
-            }} />
         </div>
       </div>
     );
@@ -252,13 +187,10 @@ class CourseList extends Component {
 
 const reduxHook = connect(
   state => ({
-    courses: state.Course.courseList,
-    count: state.Course.count,
-    tempQuery: state.Course.submittedData,
-    haveAccessToken: state.Auth.accessToken !== null,
+    courses: state.Tracking.courseList,
   }),
   dispatch => bindActionCreators({
-    ...CourseActions,
+    ...TrackingActions,
   }, dispatch)
 );
 
@@ -266,19 +198,14 @@ const reduxHook = connect(
 CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
-  addToTrackList: T.func.isRequired,
+  deleteCourse: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
-  count: T.number,
-  tempQuery: T.shape({}),
-  haveAccessToken: T.bool.isRequired,
   // Router
   history: T.shape({}).isRequired,
 };
 
 CourseList.defaultProps = {
   courses: [],
-  count: 0,
-  tempQuery: null,
 };
 
 export default reduxHook(
