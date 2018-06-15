@@ -19,10 +19,13 @@ const styles = {
     color: '#555',
     fontSize: '17px',
     cursor: 'pointer',
+    textDecoration: 'none',
+    fontWeight: 300,
   },
   currentPage: {
     fontSize: '25px',
     color: '#111',
+    fontWeight: 400,
   },
   icon: {
     backgroundColor: 'transparent',

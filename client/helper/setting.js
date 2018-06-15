@@ -46,27 +46,33 @@ export const COURSE_TYPE = [
 
 export const DEPTS = [
   {
+    id: '資科',
+    name: '資科',
+  }, {
+    id: '中文',
+    name: '中文',
+  }, {
+    id: '傳院',
+    name: '傳院',
+  }, {
     id: '商學院',
     name: '商學院',
-  }, {
-    id: '理學院',
-    name: '理學院',
-  }, {
-    id: '社會科學院',
-    name: '社會科學院',
   },
 ];
 
 export const GENERAL_COURSE_TYPE = [
   {
-    id: 0,
+    id: '人文通識',
     name: '人文通識',
   }, {
-    id: 1,
+    id: '自然通識',
     name: '自然通識',
   }, {
-    id: 3,
+    id: '社會通識',
     name: '社會通識',
+  }, {
+    id: '外文通識',
+    name: '外文通識',
   },
 ];
 
