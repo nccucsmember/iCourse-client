@@ -28,6 +28,7 @@ import MainBoard from './containers/MainBoard.jsx';
 // Reducers
 import Course from './reducers/Course.js';
 import Tracking from './reducers/Tracking.js';
+import Select from './reducers/Select.js';
 import Auth from './reducers/Auth.js';
 import Register from './reducers/Register.js';
 
@@ -36,6 +37,7 @@ const history = createBrowserHistory();
 
 export const store = createStore(
   combineReducers({
+    Select,
     Tracking,
     Course,
     Auth,

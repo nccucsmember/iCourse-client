@@ -1,14 +1,13 @@
 import { API_REQUEST } from 'redux-middleware-fetch';
 
-export const GET_TRACKING_COURSES_LIST = Symbol('GET_TRACKING_COURSES_LIST');
-export const CLEAR_TRACK_STATE = Symbol('CLEAR_TRACK_STATE');
-export const DELETE_TRACKING_COURSE = Symbol('DELETE_TRACKING_COURSE');
-export const ADD_TO_SELECT_LIST = Symbol('ADD_TO_SELECT_LIST');
-
+export const GET_SELECT_COURSES_LIST = Symbol('GET_SELECT_COURSES_LIST');
+export const CLEAR_SELECT_STATE = Symbol('CLEAR_SELECT_STATE');
+export const DELETE_SELECT_COURSE = Symbol('DELETE_SELECT_COURSE');
+export const TOGGLE_SELECT_STUTUS = Symbol('TOGGLE_SELECT_STUTUS');
 
 export function clearState() {
   return {
-    type: CLEAR_TRACK_STATE,
+    type: CLEAR_SELECT_STATE,
   };
 }
 
@@ -16,9 +15,9 @@ export function getCourseList() {
   return {
     [API_REQUEST]: {
       types: [
-        GET_TRACKING_COURSES_LIST,
+        GET_SELECT_COURSES_LIST,
       ],
-      entrypoint: '/managecourse',
+      entrypoint: '/choose',
       headers: {
         authorization: localStorage.authorization,
       },
@@ -30,10 +29,10 @@ export function deleteCourse(subjectId, callBack) {
   return {
     [API_REQUEST]: {
       types: [
-        DELETE_TRACKING_COURSE,
+        DELETE_SELECT_COURSE,
       ],
       method: 'DELETE',
-      entrypoint: `/managecourse/${subjectId}`,
+      entrypoint: `/choose/${subjectId}`,
       headers: {
         authorization: localStorage.authorization,
       },
@@ -45,11 +44,11 @@ export function deleteCourse(subjectId, callBack) {
   };
 }
 
-export function addToSelectList(subjectId, callBack) {
+export function toggleSelectStatus(subjectId, callBack) {
   return {
     [API_REQUEST]: {
       types: [
-        ADD_TO_SELECT_LIST,
+        TOGGLE_SELECT_STUTUS,
       ],
       method: 'PUT',
       entrypoint: `/choose/${subjectId}`,
@@ -57,7 +56,6 @@ export function addToSelectList(subjectId, callBack) {
         authorization: localStorage.authorization,
       },
       dispatchPayload: {
-        subjectId,
         callBack,
       },
     },
