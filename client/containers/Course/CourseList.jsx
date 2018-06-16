@@ -141,8 +141,6 @@ class CourseList extends Component {
     this.state = {
       showLightbox: false,
       courseId: '',
-    };
-  }
       cursor: 0,
     };
   }
