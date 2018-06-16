@@ -47,7 +47,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: 80,
+    minHeight: 80,
     margin: 8,
     textDecoration: 'none',
     backgroundColor: 'rgb(255, 255, 255)',
