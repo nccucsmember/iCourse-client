@@ -11,6 +11,7 @@ import Theme from '../../styles/Theme.js';
 import CourseSearcher from './CourseSearcher.jsx';
 
 // components
+import CourseDetail from '../Lightbox/CourseDetail.jsx';
 import Pagination from '../../components/Pagination.jsx';
 
 
@@ -138,10 +139,13 @@ class CourseList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      showLightbox: false,
+      courseId: '',
+    };
+  }
       cursor: 0,
     };
   }
-
   componentWillMount() {
     const {
       getCourseList,
@@ -203,7 +207,16 @@ class CourseList extends Component {
                   <span style={[styles.text, { flex: '4 4 200px' }]}>
                     {`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}
                   </span>
-                  <button style={[styles.detailButton, { flex: '2 2 100px' }]}>more</button>
+                  <button
+                    onClick={() => {
+                      this.setState({
+                        courseId: course.subject_id,
+                        showLightbox: true,
+                      });
+                    }}
+                    style={[styles.detailButton, { flex: '2 2 100px' }]}>
+                    more
+                  </button>
                   <button
                     style={[styles.addButton, { flex: '2 2 140px' }]}
                     onClick={() => {
@@ -262,6 +275,18 @@ class CourseList extends Component {
               }));
             }} />
         </div>
+        {
+          this.state.showLightbox &&
+          <CourseDetail
+            courseId={this.state.courseId}
+            eventHandler={{
+              onClick: () => {
+                this.setState({
+                  showLightbox: false,
+                });
+              },
+            }} />
+        }
       </div>
     );
   }

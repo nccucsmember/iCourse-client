@@ -9,7 +9,7 @@ import * as TrackingActions from '../../actions/Tracking.js';
 
 import Theme from '../../styles/Theme.js';
 // components
-
+import CourseDetail from '../Lightbox/CourseDetail.jsx';
 
 // Style
 const styles = {
@@ -133,6 +133,14 @@ const styles = {
 
 
 class CourseList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showLightbox: false,
+      courseId: '',
+    };
+  }
+
   componentWillMount() {
     const {
       getCourseList,
@@ -181,7 +189,17 @@ class CourseList extends Component {
                   <span style={[styles.text, { flex: '4 4 200px' }]}>
                     {`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}
                   </span>
-                  <button style={[styles.detailButton, { flex: '2 2 100px' }]}>more</button>
+                  <button
+                    onClick={() => {
+                      this.setState({
+                        courseId: course.subject_id,
+                        showLightbox: true,
+                      });
+                    }}
+                    style={[styles.detailButton, { flex: '2 2 100px' }]}>
+                    more
+                  </button>
+
                   <div style={[styles.buttonsWrapper, { flex: '2 2 180px' }]}>
                     <button
                       style={[styles.deleteButton]}
@@ -209,6 +227,18 @@ class CourseList extends Component {
             ))}
           </div>
         </div>
+        {
+          this.state.showLightbox &&
+          <CourseDetail
+            courseId={this.state.courseId}
+            eventHandler={{
+              onClick: () => {
+                this.setState({
+                  showLightbox: false,
+                });
+              },
+            }} />
+        }
       </div>
     );
   }
