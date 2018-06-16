@@ -26,6 +26,9 @@ const styles = {
   },
   h1Wrapper: {
     width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   h1: {
     color: Theme.TITLE_COLOR,
@@ -44,7 +47,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: 80,
+    minHeight: 80,
     margin: 8,
     textDecoration: 'none',
     backgroundColor: 'rgb(255, 255, 255)',
@@ -112,10 +115,39 @@ const styles = {
     outline: '0px',
     cursor: 'pointer',
   },
+  sortButton: {
+    margin: 5,
+    fontSize: 16,
+    fontWeight: 500,
+    borderRadius: 5,
+    padding: '6px 24px',
+    border: '2px solid #575759',
+    backgroundColor: '#D3D2D9',
+    color: '#575759',
+    outline: '0px',
+    cursor: 'pointer',
+    letterSpacing: 3,
+    textDecoration: 'none',
+  },
+  sortCompleteButton: {
+    border: '2px solid #3AB795',
+    backgroundColor: '#3AB795',
+    color: '#eee',
+  },
 };
 
 
 class SelectList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sortMode: false,
+      renderCourses: props.courses || [],
+      draggedCourse: null,
+      beforeResort: [],
+    };
+  }
+
   componentWillMount() {
     const {
       getCourseList,
@@ -124,20 +156,155 @@ class SelectList extends Component {
     getCourseList();
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps({
+    courses,
+  }) {
+    if (courses.length && this.props.courses !== courses) {
+      this.setState({ renderCourses: courses });
+    }
+  }
+
+  handleDragOver(id, event) {
+    event.preventDefault();
+
+    const targetElement = document.getElementById(id);
+    const targetRect = targetElement.getBoundingClientRect();
+    const distance = (targetRect.y + (targetRect.height / 2)) - event.clientY;
+
+    if (distance <= -targetRect.height / 5) {
+      targetElement.style.borderTop = '';
+      targetElement.style.borderBottom = 'dashed 5px rgb(245, 67, 67)';
+      this.relativePosition = 'bottom';
+    } else if (distance >= targetRect.height / 5) {
+      targetElement.style.borderBottom = '';
+      targetElement.style.borderTop = 'dashed 4px rgb(245, 67, 67)';
+      this.relativePosition = 'top';
+    }
+  }
+
+  move(targetId, relativePosition = this.relativePosition) {
+    const {
+      draggedCourse,
+      renderCourses,
+    } = this.state;
+    if (draggedCourse === targetId) return null;
+
+    const originalCourseList = renderCourses.slice();
+    const draggedIndex = originalCourseList.findIndex(a => a.course_id === draggedCourse);
+    let tempCourseList = [
+      ...originalCourseList.slice(0, draggedIndex),
+      ...originalCourseList.slice(draggedIndex + 1),
+    ];
+    const targetIndex = tempCourseList.findIndex(a => a.course_id === targetId);
+    switch (relativePosition) {
+      case 'top':
+        tempCourseList = [
+          ...tempCourseList.slice(0, targetIndex),
+          originalCourseList[draggedIndex],
+          ...tempCourseList.slice(targetIndex),
+        ];
+        break;
+      case 'bottom':
+        tempCourseList = [
+          ...tempCourseList.slice(0, targetIndex + 1),
+          originalCourseList[draggedIndex],
+          ...tempCourseList.slice(targetIndex + 1),
+        ];
+        break;
+      default:
+        return null;
+    }
+    this.setState({
+      renderCourses: tempCourseList,
+    });
+    return null;
+  }
+
+  handleDragStart(id) {
+    document.getElementById(id).style.opacity = 0.3;
+    this.setState({
+      draggedCourse: id,
+    });
+  }
+
+  handleDragLeave(id) {
+    const targetElement = document.getElementById(id);
+
+    targetElement.style.borderTop = '';
+    targetElement.style.borderBottom = '';
+    return this;
+  }
+
+  handleDragEnd(id) {
+    const targetElement = document.getElementById(id);
+    targetElement.style.opacity = 1;
+    return this;
+  }
+
+  handleDrop(id) {
+    const targetElement = document.getElementById(id);
+
+    targetElement.style.borderTop = '';
+    targetElement.style.borderBottom = '';
+    this.move(id);
   }
 
   render() {
     const {
-      courses,
       toggleSelectStatus,
     } = this.props;
+
+    const {
+      sortMode,
+      renderCourses,
+    } = this.state;
 
     return (
       <div style={styles.wrapper}>
         <div style={styles.container}>
           <div style={styles.h1Wrapper}>
             <h1 style={styles.h1}>選課清單</h1>
+            {
+              sortMode ?
+                <div>
+                  <button
+                    key="submitButton"
+                    onClick={() => {
+                      const submitData = renderCourses.map(a => a.course_id);
+                      // sortCourses({
+                      //   sortIndexIds: submitData,
+                      // }, renderCourses);
+                      this.setState({
+                        sortMode: false,
+                      });
+                    }}
+                    style={[styles.sortButton, styles.sortCompleteButton]}>
+                    儲存
+                  </button>
+                  <button
+                    key="cancelButton"
+                    onClick={() => {
+                      this.setState({
+                        sortMode: false,
+                        renderCourses: this.state.beforeResort,
+                      });
+                    }}
+                    style={[styles.sortButton]}>
+                    取消
+                  </button>
+                </div>
+                : (
+                  <button
+                    onClick={() => {
+                      this.setState({
+                        sortMode: true,
+                        beforeResort: renderCourses,
+                      });
+                    }}
+                    style={styles.sortButton}>
+                    編輯排序
+                  </button>
+                )}
           </div>
           <div style={styles.coursesWraper}>
             <div style={[styles.headerWrapper]}>
@@ -151,8 +318,17 @@ class SelectList extends Component {
               <span style={[styles.buttonWraper, { flex: '2 2 100px' }]}>更多資訊</span>
               <span style={[styles.buttonWraper, { flex: '2 2 100px' }]}>操作</span>
             </div>
-            {courses[0] && courses.map((course, index) => (
-              <div key={course.course_id} style={styles.courseWrapper}>
+            {renderCourses[0] && renderCourses.map((course, index) => (
+              <div
+                draggable={this.state.sortMode}
+                id={course.course_id}
+                onDragStart={event => this.handleDragStart(course.course_id, event)}
+                onDragOver={event => this.handleDragOver(course.course_id, event)}
+                onDragLeave={event => this.handleDragLeave(course.course_id, event)}
+                onDragEnd={event => this.handleDragEnd(course.course_id, event)}
+                onDrop={event => this.handleDrop(course.course_id, event)}
+                style={[styles.courseWrapper, sortMode && { cursor: 'move' }]}
+                key={course.course_id}>
                 <div style={[styles.course, index % 2 !== 0 ? styles.courseRowEven : null]}>
                   <span style={[styles.text, { flex: '1 1 50px' }]}>{course.semester || ''}</span>
                   <span style={[styles.text, { flex: '2 2 100px' }]}>{course.course_name_ch || ''}</span>
