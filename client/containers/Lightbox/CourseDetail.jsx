@@ -122,7 +122,7 @@ class CourseDetail extends Component {
               <h2 style={styles.title}>課程評價</h2>
               <ul>
                 {comments[0] ? comments.map(comment => (
-                  <li style={styles.text}>{comment.content || ''}</li>
+                  <li style={styles.text}>{comment.content || ''} 得分：{comment.score}</li>
                 )) : <div>尚無評論</div>}
               </ul>
             </div>
