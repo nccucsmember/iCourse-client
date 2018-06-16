@@ -1,41 +1,33 @@
 import {
-  CLEAR_TRACK_STATE,
-  GET_TRACKING_COURSES_LIST,
-  DELETE_TRACKING_COURSE,
-  ADD_TO_SELECT_LIST,
-} from '../actions/Tracking.js';
+  CLEAR_SELECT_STATE,
+  GET_SELECT_COURSES_LIST,
+  DELETE_SELECT_COURSE,
+  TOGGLE_SELECT_STUTUS,
+} from '../actions/Select.js';
 
 export default (state = {
   courseList: [],
 }, action) => {
   switch (action.type) {
-    case ADD_TO_SELECT_LIST: {
-      if (action.message) {
-        action.callBack(action.message);
-      }
-      const deletedIndex = state.courseList
-      && state.courseList.findIndex(a => a.subject_id === action.subjectId);
+    case TOGGLE_SELECT_STUTUS: {
       return {
         ...state,
-        courseList: [
-          ...state.courseList.slice(0, deletedIndex),
-          ...state.courseList.slice(deletedIndex + 1),
-        ],
+        courseList: action.chosen_courses_list,
       };
     }
-    case CLEAR_TRACK_STATE: {
+    case CLEAR_SELECT_STATE: {
       return {
         ...state,
         courseList: [],
       };
     }
-    case GET_TRACKING_COURSES_LIST: {
+    case GET_SELECT_COURSES_LIST: {
       return {
         ...state,
-        courseList: action.course_list,
+        courseList: action.chosen_courses_list,
       };
     }
-    case DELETE_TRACKING_COURSE: {
+    case DELETE_SELECT_COURSE: {
       if (action.message) {
         action.callBack(action.message);
       }

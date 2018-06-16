@@ -17,6 +17,7 @@ import SiteHeader from './SiteHeader.jsx';
 // Routes
 import CourseRoute from '../routes/Course.jsx';
 import TrackingRoute from '../routes/Tracking.jsx';
+import SelectRoute from '../routes/Select.jsx';
 
 import backgrounImage from '../static/img/star.png';
 
@@ -54,6 +55,7 @@ function ToLoginPage({
   if (haveAccessToken) {
     return (
       <Switch>
+        <Route path="/select" component={SelectRoute} />
         <Route path="/tracking" component={TrackingRoute} />
         <Route path="/course" component={CourseRoute} />
         <Route path="/" component={CourseRoute} />

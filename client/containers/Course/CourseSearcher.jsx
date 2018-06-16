@@ -61,12 +61,14 @@ class CourseSearcher extends Component {
   submit(data) {
     const {
       getCourseList,
+      saveSubmitData,
     } = this.props;
 
-    getCourseList({
+    const submitData = {
       ...data,
-      dept: data.dept === '-1' ? null : data.dept,
-    });
+    };
+    getCourseList(submitData);
+    saveSubmitData(submitData);
   }
 
   render() {
@@ -84,10 +86,19 @@ class CourseSearcher extends Component {
                   width: 300,
                 }}
                 type="text"
-                placeholder="課程名稱、任課教師名稱"
+                placeholder="課程名稱"
                 component={Input}
-                label="關鍵字"
-                name="keyword" />
+                label="課程名稱"
+                name="course_name_ch" />
+              <Field
+                style={{
+                  width: 150,
+                }}
+                type="text"
+                placeholder="任課教師"
+                component={Input}
+                label="任課教師"
+                name="teacher" />
             </div>
             <div style={styles.inputGroup}>
               <Field
@@ -95,21 +106,15 @@ class CourseSearcher extends Component {
                 nullable
                 options={DEPTS}
                 label="開課單位："
-                name="dept" />
+                name="department" />
               <Field
                 component={Selector}
                 nullable
                 options={GENERAL_COURSE_TYPE}
                 label="通識類別："
-                name="generalType" />
+                name="general_type" />
             </div>
             <div style={styles.inputGroup}>
-              <Field
-                component={Selector}
-                options={OPEN_TIME}
-                nullable
-                label="上課時間："
-                name="time" />
               <Field
                 component={CheckBoxGroup}
                 options={COURSE_TIME}
@@ -121,7 +126,7 @@ class CourseSearcher extends Component {
                 component={CheckBoxGroup}
                 options={COURSE_TYPE}
                 label="課程類別："
-                name="type" />
+                name="course_type" />
             </div>
             <SubmitButton label="查詢" />
           </form>
@@ -134,6 +139,7 @@ class CourseSearcher extends Component {
 CourseSearcher.propTypes = {
   handleSubmit: T.func.isRequired,
   getCourseList: T.func.isRequired,
+  saveSubmitData: T.func.isRequired,
 };
 
 CourseSearcher.defaultProps = {

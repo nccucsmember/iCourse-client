@@ -12,6 +12,7 @@ import CourseSearcher from './CourseSearcher.jsx';
 
 // components
 import CourseDetail from '../Lightbox/CourseDetail.jsx';
+import Pagination from '../../components/Pagination.jsx';
 
 
 // Style
@@ -47,7 +48,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    height: 80,
+    minHeight: 80,
     margin: 8,
     textDecoration: 'none',
     backgroundColor: 'rgb(255, 255, 255)',
@@ -115,8 +116,24 @@ const styles = {
     outline: '0px',
     cursor: 'pointer',
   },
+  empty: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    minHeight: 80,
+    margin: 8,
+    textDecoration: 'none',
+    backgroundColor: 'rgb(255, 255, 255)',
+    borderRadius: 6,
+    borderShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
+    padding: '0px 15px',
+    fontSize: 16,
+  },
 };
 
+
+const LIST_LIMITS = 10;
 
 class CourseList extends Component {
   constructor(props) {
@@ -124,6 +141,9 @@ class CourseList extends Component {
     this.state = {
       showLightbox: false,
       courseId: '',
+    };
+  }
+      cursor: 0,
     };
   }
   componentWillMount() {
@@ -134,12 +154,24 @@ class CourseList extends Component {
     getCourseList();
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tempQuery !== this.props.tempQuery) {
+      this.setState({
+        cursor: 0,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearState();
   }
 
   render() {
     const {
       courses,
+      getCourseList,
+      tempQuery,
+      count,
       haveAccessToken,
       addToTrackList,
     } = this.props;
@@ -163,7 +195,7 @@ class CourseList extends Component {
               <span style={[styles.buttonWraper, { flex: '2 2 100px' }]}>更多資訊</span>
               <span style={[styles.buttonWraper, { flex: '2 2 100px' }]}>操作</span>
             </div>
-            {courses[0] && courses.map((course, index) => (
+            {courses[0] ? courses.map((course, index) => (
               <div key={course.course_id} style={styles.courseWrapper}>
                 <div style={[styles.course, index % 2 !== 0 ? styles.courseRowEven : null]}>
                   <span style={[styles.text, { flex: '1 1 50px' }]}>{course.semester || ''}</span>
@@ -206,8 +238,42 @@ class CourseList extends Component {
                     }}>加入追蹤清單</button>
                 </div>
               </div>
-            ))}
+            )) : <div style={styles.empty}>查無資料</div>}
           </div>
+          <Pagination
+            total={count}
+            limit={LIST_LIMITS}
+            jumpToPage={(p) => {
+              this.setState({
+                cursor: (p - 1) * LIST_LIMITS,
+              }, () => {
+                getCourseList(tempQuery, {
+                  limit: 10,
+                  offset: this.state.cursor,
+                });
+              });
+            }}
+            currentCursor={this.state.cursor}
+            disableForward={this.state.cursor > this.props.count || this.props.count < LIST_LIMITS}
+            disableBackward={this.state.cursor <= 0 || this.props.count < LIST_LIMITS}
+            forward={() => {
+              this.setState({
+                cursor: this.state.cursor + LIST_LIMITS,
+              }, () => {
+                getCourseList(tempQuery, {
+                  limit: 10,
+                  offset: this.state.cursor,
+                });
+              });
+            }}
+            backward={() => {
+              this.setState({
+                cursor: this.state.cursor - LIST_LIMITS,
+              }, () => getCourseList(tempQuery, {
+                limit: 10,
+                offset: this.state.cursor,
+              }));
+            }} />
         </div>
         {
           this.state.showLightbox &&
@@ -230,6 +296,8 @@ class CourseList extends Component {
 const reduxHook = connect(
   state => ({
     courses: state.Course.courseList,
+    count: state.Course.count,
+    tempQuery: state.Course.submittedData,
     haveAccessToken: state.Auth.accessToken !== null,
   }),
   dispatch => bindActionCreators({
@@ -241,8 +309,11 @@ const reduxHook = connect(
 CourseList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
+  clearState: T.func.isRequired,
   addToTrackList: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
+  count: T.number,
+  tempQuery: T.shape({}),
   haveAccessToken: T.bool.isRequired,
   // Router
   history: T.shape({}).isRequired,
@@ -250,6 +321,8 @@ CourseList.propTypes = {
 
 CourseList.defaultProps = {
   courses: [],
+  count: 0,
+  tempQuery: null,
 };
 
 export default reduxHook(
