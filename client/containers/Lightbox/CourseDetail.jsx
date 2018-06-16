@@ -120,8 +120,10 @@ class CourseDetail extends Component {
                 <li style={styles.text}>上課地點：{course.location}</li>
               </ul>
               <h2 style={styles.title}>課程評價</h2>
-              <ul> 
-                <li style={styles.text}>{comment[0].content}</li>
+              <ul>
+                {comments[0] ? comments.map(comment => (
+                  <li style={styles.text}>{comment[0].content}</li>
+                )) : <div>尚無評論</div>}
               </ul>
             </div>
           </div>
