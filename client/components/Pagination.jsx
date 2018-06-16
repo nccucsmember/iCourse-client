@@ -21,11 +21,13 @@ const styles = {
     cursor: 'pointer',
     textDecoration: 'none',
     fontWeight: 300,
+    minWidth: 20,
   },
   currentPage: {
     fontSize: '25px',
     color: '#111',
     fontWeight: 400,
+    minWidth: 20,
   },
   icon: {
     backgroundColor: 'transparent',
