@@ -3,12 +3,19 @@ import {
   GET_SELECT_COURSES_LIST,
   DELETE_SELECT_COURSE,
   TOGGLE_SELECT_STUTUS,
+  SORT_COURSES,
 } from '../actions/Select.js';
 
 export default (state = {
   courseList: [],
 }, action) => {
   switch (action.type) {
+    case SORT_COURSES: {
+      return {
+        ...state,
+        courseList: action.sortedCourses,
+      };
+    }
     case TOGGLE_SELECT_STUTUS: {
       return {
         ...state,

@@ -252,6 +252,7 @@ class SelectList extends Component {
   render() {
     const {
       toggleSelectStatus,
+      sortCourses,
     } = this.props;
 
     const {
@@ -270,10 +271,10 @@ class SelectList extends Component {
                   <button
                     key="submitButton"
                     onClick={() => {
-                      const submitData = renderCourses.map(a => a.course_id);
-                      // sortCourses({
-                      //   sortIndexIds: submitData,
-                      // }, renderCourses);
+                      const submitData = renderCourses.map(a => a.subject_id);
+                      sortCourses({
+                        order_list: submitData,
+                      }, renderCourses);
                       this.setState({
                         sortMode: false,
                       });
@@ -375,6 +376,7 @@ SelectList.propTypes = {
   // redux
   getCourseList: T.func.isRequired,
   toggleSelectStatus: T.func.isRequired,
+  sortCourses: T.func.isRequired,
   courses: T.arrayOf(T.shape({})),
   // Router
   history: T.shape({}).isRequired,
