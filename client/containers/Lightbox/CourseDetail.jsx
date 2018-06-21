@@ -30,7 +30,7 @@ const styles = {
     width: '90%',
     backgroundColor: '#eee',
     position: 'relative',
-    top: 300,
+    top: 100,
     borderRadius: 5,
     boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
     border: 'transparent',
@@ -52,6 +52,12 @@ const styles = {
     position: 'absolute',
     outline: 'none',
     cursor: 'pointer',
+  },
+  text: {
+    margin: '15px 0px',
+    minWidth: 50,
+    fontSize: 20,
+    fontWeight: 300,
   },
 };
 
@@ -99,7 +105,26 @@ class CourseDetail extends Component {
               <i className="fa fa-times" />
             </button>
             <div style={styles.titleWrapper}>
+              <h2 style={styles.title}>課程詳細資訊</h2>
+              <ul>
+                <li style={styles.text}>課程代號：{course.subject_id}</li>
+                <li style={styles.text}>課程中文名稱：{course.course_name_ch}</li>
+                <li style={styles.text}>課程英文名稱：{course.course_name_en}</li>
+                <li style={styles.text}>開課學期：{course.semester}</li>
+                <li style={styles.text}>課程修別：{course.course_type}修</li>
+                <li style={styles.text}>學分數：{course.credits}學分</li>
+                <li style={styles.text}>上課期數：{course.num_semesters}學期</li>
+                <li style={styles.text}>授課教師：{course.teacher}</li>
+                <li style={styles.text}>開課單位：{course.department}</li>
+                <li style={styles.text}>上課時間：{`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}</li>
+                <li style={styles.text}>上課地點：{course.location}</li>
+              </ul>
               <h2 style={styles.title}>課程評價</h2>
+              <ul>
+                {comments[0] ? comments.map(comment => (
+                  <li style={styles.text}>{comment.content || ''} 得分：{comment.score}</li>
+                )) : <div>尚無評論</div>}
+              </ul>
             </div>
           </div>
         </div>
