@@ -74,9 +74,11 @@ class CourseDetail extends Component {
       courseId,
       getCourseDetail,
       getComments,
+      getAverageScore,
     } = this.props;
     getCourseDetail(courseId);
     getComments(courseId);
+    getAverageScore(courseId);
   }
 
   componentWillReceiveProps() {
@@ -91,10 +93,9 @@ class CourseDetail extends Component {
       eventHandler,
       course,
       comments,
+      averageScore,
     } = this.props;
     if (!course) return null;
-    console.log(course);
-    console.log(comments);
     return (
       <div style={styles.wrapper}>
         <div style={styles.container}>
@@ -121,6 +122,7 @@ class CourseDetail extends Component {
               </ul>
               <h2 style={styles.title}>課程評價</h2>
               <ul>
+                <li style={styles.text}>平均：{averageScore || '尚未評分'}</li>
                 {comments[0] ? comments.map(comment => (
                   <li style={styles.text}>{comment.content || ''} 得分：{comment.score}</li>
                 )) : <div>尚無評論</div>}
@@ -136,6 +138,7 @@ class CourseDetail extends Component {
 CourseDetail.defaultProps = {
   course: null,
   comments: [],
+  averageScore: null,
 };
 
 CourseDetail.propTypes = {
@@ -143,8 +146,10 @@ CourseDetail.propTypes = {
   getCourseDetail: T.func.isRequired,
   getComments: T.func.isRequired,
   clearState: T.func.isRequired,
+  getAverageScore: T.func.isRequired,
   course: T.shape({}),
   comments: T.arrayOf(T.shape({})),
+  averageScore: T.number,
   // react
   eventHandler: T.shape({
     onClick: T.func.isRequired,
@@ -155,6 +160,7 @@ CourseDetail.propTypes = {
 const reduxHook = connect(
   state => ({
     course: state.Detail.courseInfo,
+    averageScore: state.Detail.averageScore,
     comments: state.Detail.comments,
   }),
   dispatch => bindActionCreators({
