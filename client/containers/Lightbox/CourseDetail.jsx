@@ -27,6 +27,7 @@ const styles = {
     alignItems: 'center',
   },
   mainWrap: {
+    maxHeight: '80%',
     width: '90%',
     backgroundColor: '#eee',
     position: 'relative',
@@ -36,6 +37,7 @@ const styles = {
     border: 'transparent',
     padding: 20,
     zIndex: 2001,
+    overflowY: 'scroll',
   },
   title: {
     fontSize: 20,
@@ -58,6 +60,30 @@ const styles = {
     minWidth: 50,
     fontSize: 20,
     fontWeight: 300,
+  },
+  thumbup: {
+    border: 'none',
+    margin: 5,
+    outline: 'none',
+    cursor: 'pointer',
+    backgroundColor: 'transparent',
+  },
+  commentsWrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  listItemWrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: '10px 0px',
+    padding: 0,
+  },
+  listItem: {
+    fontSize: 17,
+    listStyleType: 'none',
+    margin: '8px 0px',
+    padding: '0 0.75rem',
+    borderLeft: '2px solid #d2d5e4',
   },
 };
 
@@ -120,13 +146,20 @@ class CourseDetail extends Component {
                 <li style={styles.text}>上課時間：{`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}</li>
                 <li style={styles.text}>上課地點：{course.location}</li>
               </ul>
-              <h2 style={styles.title}>課程評價</h2>
-              <ul>
-                <li style={styles.text}>平均：{averageScore || '尚未評分'}</li>
-                {comments[0] ? comments.map(comment => (
-                  <li style={styles.text}>{comment.content || ''} 得分：{comment.score}</li>
-                )) : <div>尚無評論</div>}
-              </ul>
+              <h2 style={styles.title}>課程評價 (平均：{averageScore || '尚未評分'})</h2>
+              <div style={styles.commentsWrapper}>
+                <ul style={styles.listItemWrapper}>
+                  {comments[0] ? comments.map(comment => (
+                    <li key={comment.id} style={styles.listItem}>
+                      {comment.content || ''}（評分: {comment.score})
+                      <button
+                        style={styles.thumbup}>
+                        <i className="fa fa-thumbs-up" />{comment.good}
+                      </button>
+                    </li>
+                  )) : <div>尚無評論</div>}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
