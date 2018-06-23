@@ -8,6 +8,8 @@ import { PropTypes as T } from 'prop-types';
 
 import * as detailActions from '../../actions/Detail.js';
 
+import { COMMENTS_ORDER_TYPES } from '../../helper/setting.js';
+
 const styles = {
   wrapper: {
     position: 'fixed',
@@ -43,7 +45,7 @@ const styles = {
     fontSize: 20,
     fontWeight: 500,
     color: 'rgb(10, 52, 70)',
-    margin: '0px auto',
+    margin: '0px 0px',
   },
   button: {
     top: 5,
@@ -85,6 +87,26 @@ const styles = {
     padding: '0 0.75rem',
     borderLeft: '2px solid #d2d5e4',
   },
+  commentHeaderWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyConent: 'flex-start',
+  },
+  orderType: {
+    border: 'none',
+    backgroundColor: 'transparent',
+    fontSize: 15,
+    fontWeight: 300,
+    cursor: 'pointer',
+    outline: 'none',
+    margin: 5,
+    padding: 3,
+  },
+  activeType: {
+    borderBottom: '1.5px solid #333',
+    fontWeight: '500',
+    color: '#333',
+  },
 };
 
 class CourseDetail extends Component {
@@ -92,6 +114,7 @@ class CourseDetail extends Component {
     super(props);
 
     this.state = {
+      orderType: 'descent',
     };
   }
 
@@ -102,8 +125,11 @@ class CourseDetail extends Component {
       getComments,
       getAverageScore,
     } = this.props;
+    const {
+      orderType,
+    } = this.state;
     getCourseDetail(courseId);
-    getComments(courseId);
+    getComments(courseId, orderType);
     getAverageScore(courseId);
   }
 
@@ -120,6 +146,7 @@ class CourseDetail extends Component {
       course,
       comments,
       averageScore,
+      courseId,
     } = this.props;
     if (!course) return null;
     return (
@@ -146,7 +173,21 @@ class CourseDetail extends Component {
                 <li style={styles.text}>上課時間：{`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}</li>
                 <li style={styles.text}>上課地點：{course.location}</li>
               </ul>
-              <h2 style={styles.title}>課程評價 (平均：{averageScore || '尚未評分'})</h2>
+              <div style={styles.commentHeaderWrapper}>
+                <h2 style={styles.title}>課程評價 (平均：{averageScore || '尚未評分'})</h2>
+                {COMMENTS_ORDER_TYPES.map(item => (
+                  <button
+                    style={[styles.orderType, item.id === this.state.orderType ? styles.activeType : { borderBottom: 'none' }]}
+                    key={item.id}
+                    onClick={() => {
+                      this.setState({
+                        orderType: item.id,
+                      }, () => {
+                        this.props.getComments(courseId, this.state.orderType);
+                      });
+                    }}>{item.name}</button>
+                ))}
+              </div>
               <div style={styles.commentsWrapper}>
                 <ul style={styles.listItemWrapper}>
                   {comments[0] ? comments.map(comment => (

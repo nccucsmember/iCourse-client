@@ -92,4 +92,21 @@ export const OPEN_TIME = [
   },
 ];
 
+
+export const COMMENTS_ORDER_TYPES = [
+  {
+    id: 'time_descent',
+    name: '時間↓',
+  }, {
+    id: 'time_ascent',
+    name: '時間↑',
+  }, {
+    id: 'descent',
+    name: '讚數↓',
+  }, {
+    id: 'ascent',
+    name: '讚數↑',
+  },
+];
+
 export default SITE_LINKS;
