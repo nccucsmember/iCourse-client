@@ -153,6 +153,9 @@ class CourseDetail extends Component {
       averageScore,
       courseId,
       userThumbupList,
+      clickThumUp,
+      getComments,
+      checkThumbUp,
     } = this.props;
     if (!course) return null;
     return (
@@ -201,6 +204,13 @@ class CourseDetail extends Component {
                       {comment.content || ''}（評分: {comment.score})
                       <button
                         disabled={!localStorage.authorization}
+                        onClick={() => {
+                          if (userThumbupList.find(item => item === comment.id)) {
+                            clickThumUp(comment.id, 'DELETE');
+                          } else {
+                            clickThumUp(comment.id, 'PUT');
+                          }
+                        }}
                         style={[styles.thumbup, !localStorage.authorization && { cursor: 'auto' }]}>
                         {
                           userThumbupList.find(item => item === comment.id) ?
@@ -234,6 +244,7 @@ CourseDetail.propTypes = {
   clearState: T.func.isRequired,
   getAverageScore: T.func.isRequired,
   checkThumbUp: T.func.isRequired,
+  clickThumUp: T.func.isRequired,
   course: T.shape({}),
   comments: T.arrayOf(T.shape({})),
   averageScore: T.number,

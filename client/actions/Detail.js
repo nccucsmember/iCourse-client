@@ -5,6 +5,26 @@ export const DETAIL_CLEAR_STATE = 'DETAIL_CLEAR_STATE';
 export const GET_COURSE_COMMENTS = 'GET_COURSE_COMMENTS';
 export const GET_COURSE_AVERAGE_SCORE = 'GET_COURSE_AVERAGE_SCORE';
 export const CHECK_COURSE_THUMB_UP = 'CHECK_COURSE_THUMB_UP';
+export const CLICK_THUMB_UP = 'CLICK_THUMB_UP';
+
+export function clickThumUp(commentId, method) {
+  return {
+    [API_REQUEST]: {
+      types: [
+        CLICK_THUMB_UP,
+      ],
+      entrypoint: `/comment/${commentId}/click_thumbup`,
+      method,
+      headers: {
+        authorization: localStorage.authorization,
+      },
+      dispatchPayload: {
+        commentId,
+        method,
+      },
+    },
+  };
+}
 
 export function checkThumbUp(courseId) {
   return {

@@ -4,6 +4,7 @@ import {
   GET_COURSE_COMMENTS,
   GET_COURSE_AVERAGE_SCORE,
   CHECK_COURSE_THUMB_UP,
+  CLICK_THUMB_UP,
 } from '../actions/Detail.js';
 
 export default (state = {
@@ -13,6 +14,41 @@ export default (state = {
   commentsWithClickedThumbup: [],
 }, action) => {
   switch (action.type) {
+    case CLICK_THUMB_UP: {
+      const editCommentIndex = state.comments &&
+      state.comments.findIndex(item => item.id === action.commentId);
+      const editThumbIndex = state.commentsWithClickedThumbup &&
+      state.commentsWithClickedThumbup.findIndex(item => item === action.commentId);
+      switch (action.method) {
+        case 'DELETE':
+          return {
+            ...state,
+            comments: [
+              ...state.comments.slice(0, editCommentIndex),
+              action.comment_status,
+              ...state.comments.slice(editCommentIndex + 1),
+            ],
+            commentsWithClickedThumbup: [
+              ...state.commentsWithClickedThumbup.slice(0, editThumbIndex),
+              ...state.commentsWithClickedThumbup.slice(editThumbIndex + 1),
+            ],
+          };
+        case 'PUT':
+          return {
+            ...state,
+            commentsWithClickedThumbup: [...state.commentsWithClickedThumbup, action.commentId],
+            comments: [
+              ...state.comments.slice(0, editCommentIndex),
+              action.comment_status,
+              ...state.comments.slice(editCommentIndex + 1),
+            ],
+          };
+        default:
+          return {
+            ...state,
+          };
+      }
+    }
     case CHECK_COURSE_THUMB_UP: {
       return {
         ...state,
