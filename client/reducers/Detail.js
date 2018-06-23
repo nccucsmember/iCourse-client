@@ -61,7 +61,7 @@ export default (state = {
     case GET_COURSE_AVERAGE_SCORE: {
       return {
         ...state,
-        averageScore: action.score[0]['avg(comments.score)'],
+        averageScore: action.score[0]['ROUND(avg(comments.score),1)'],
       };
     }
     case GET_COURSE_COMMENTS: {
