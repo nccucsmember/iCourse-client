@@ -115,7 +115,7 @@ class MainBoard extends ReactComponent {
               </Switch>
             </div>
             <div>
-              <a href="https://github.com/nccucsmember">
+              <a href="http://creativecommons.org/licenses/by-nc-nd/3.0/tw/">
                 <img
                   style={{
                     position: 'fixed',
@@ -130,7 +130,7 @@ class MainBoard extends ReactComponent {
                 style={{
                   margin: 10,
                   textAlign: 'center' }}>
-                Copyright &copy; 2018 政大資科系 iCourse All rights reserved.
+                Copyright &copy; <a href="https://github.com/nccucsmember">2018 政大資科系 iCourse</a> All rights reserved.
               </footer>
             </div>
           </div>
