@@ -6,6 +6,7 @@ import radium from 'radium';
 import {
   reduxForm,
   Field,
+  reset,
 } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -15,7 +16,6 @@ import {
   COURSE_TIME,
   COURSE_TYPE,
   DEPTS,
-  OPEN_TIME,
   GENERAL_COURSE_TYPE,
 } from '../../helper/setting.js';
 
@@ -52,6 +52,19 @@ const styles = {
   },
   inputGroup: {
     display: 'flex',
+  },
+  resetButton: {
+    fontSize: 14,
+    border: 0,
+    borderRadius: 5,
+    padding: '6px 24px',
+    margin: '0 8px',
+    color: '#fff',
+    backgroundColor: '#fd6868',
+    cursor: 'pointer',
+    ':hover': {
+      opacity: 0.88,
+    },
   },
 };
 
@@ -128,7 +141,14 @@ class CourseSearcher extends Component {
                 label="課程類別："
                 name="course_type" />
             </div>
-            <SubmitButton label="查詢" />
+            <div style={styles.inputGroup}>
+              <SubmitButton label="查詢" />
+              <button
+                style={styles.resetButton}
+                onClick={() => {
+                  this.props.reset();
+                }}>重設選項</button>
+            </div>
           </form>
         </div>
       </div>
@@ -140,6 +160,7 @@ CourseSearcher.propTypes = {
   handleSubmit: T.func.isRequired,
   getCourseList: T.func.isRequired,
   saveSubmitData: T.func.isRequired,
+  reset: T.func.isRequired,
 };
 
 CourseSearcher.defaultProps = {
@@ -150,6 +171,7 @@ const reduxHook = connect(
   }),
   dispatch => bindActionCreators({
     ...courseActions,
+    ...reset(FORM_NAME),
   }, dispatch)
 );
 
