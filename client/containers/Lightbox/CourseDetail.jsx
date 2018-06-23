@@ -8,6 +8,8 @@ import { PropTypes as T } from 'prop-types';
 
 import * as detailActions from '../../actions/Detail.js';
 
+import { COMMENTS_ORDER_TYPES } from '../../helper/setting.js';
+
 const styles = {
   wrapper: {
     position: 'fixed',
@@ -27,6 +29,7 @@ const styles = {
     alignItems: 'center',
   },
   mainWrap: {
+    maxHeight: '80%',
     width: '90%',
     backgroundColor: '#eee',
     position: 'relative',
@@ -36,12 +39,13 @@ const styles = {
     border: 'transparent',
     padding: 20,
     zIndex: 2001,
+    overflowY: 'scroll',
   },
   title: {
     fontSize: 20,
     fontWeight: 500,
     color: 'rgb(10, 52, 70)',
-    margin: '0px auto',
+    margin: '0px 0px',
   },
   button: {
     top: 5,
@@ -86,6 +90,54 @@ const styles = {
     backgroundColor: '#eef3f7',
     width: '30%',
   },
+  thumbup: {
+    border: 'none',
+    margin: 5,
+    outline: 'none',
+    cursor: 'pointer',
+    backgroundColor: 'transparent',
+  },
+  commentsWrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  listItemWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    margin: '10px 0px',
+    padding: 0,
+  },
+  listItem: {
+    fontSize: 17,
+    listStyleType: 'none',
+    margin: '8px 0px',
+    padding: '0 0.75rem',
+    borderLeft: '2px solid #d2d5e4',
+  },
+  commentHeaderWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyConent: 'flex-start',
+  },
+  orderType: {
+    borderTop: 'none',
+    borderRight: 'none',
+    borderBottom: 'none',
+    borderLeft: 'none',
+    backgroundColor: 'transparent',
+    fontSize: 15,
+    fontWeight: 300,
+    cursor: 'pointer',
+    outline: 'none',
+    margin: 5,
+    padding: 3,
+  },
+  activeType: {
+    borderBottom: '1.5px solid #333',
+    fontWeight: '500',
+    color: '#333',
+  },
 };
 
 class CourseDetail extends Component {
@@ -93,6 +145,7 @@ class CourseDetail extends Component {
     super(props);
 
     this.state = {
+      orderType: 'descent',
     };
   }
 
@@ -101,9 +154,16 @@ class CourseDetail extends Component {
       courseId,
       getCourseDetail,
       getComments,
+      getAverageScore,
+      checkThumbUp,
     } = this.props;
+    const {
+      orderType,
+    } = this.state;
     getCourseDetail(courseId);
-    getComments(courseId);
+    getComments(courseId, orderType);
+    getAverageScore(courseId);
+    checkThumbUp(courseId);
   }
 
   componentWillReceiveProps() {
@@ -118,10 +178,12 @@ class CourseDetail extends Component {
       eventHandler,
       course,
       comments,
+      averageScore,
+      courseId,
+      userThumbupList,
+      clickThumUp,
     } = this.props;
     if (!course) return null;
-    console.log(course);
-    console.log(comments);
     return (
       <div style={styles.wrapper}>
         <div style={styles.container}>
@@ -147,12 +209,46 @@ class CourseDetail extends Component {
                 <tr style={styles.tr}><td style={styles.tableTitle}>上課時間：</td><td style={styles.tableContent}>{`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}</td>
                   <td style={styles.tableTitle}>上課地點：</td><td style={styles.tableContent}>{course.location}</td></tr>
               </table>
-              <h2 style={styles.title}>課程評價</h2>
-              <ul>
-                {comments[0] ? comments.map(comment => (
-                  <li style={styles.text}>{comment.content || ''} 得分：{comment.score}</li>
-                )) : <div>尚無評論</div>}
-              </ul>
+              <div style={styles.commentHeaderWrapper}>
+                <h2 style={styles.title}>課程評價 (平均：{averageScore || '尚未評分'})</h2>
+                {COMMENTS_ORDER_TYPES.map(item => (
+                  <button
+                    style={[styles.orderType, item.id === this.state.orderType ? styles.activeType : { borderBottom: 'none' }]}
+                    key={item.id}
+                    onClick={() => {
+                      this.setState({
+                        orderType: item.id,
+                      }, () => {
+                        this.props.getComments(courseId, this.state.orderType);
+                      });
+                    }}>{item.name}</button>
+                ))}
+              </div>
+              <div style={styles.commentsWrapper}>
+                <ul style={styles.listItemWrapper}>
+                  {comments[0] ? comments.map(comment => (
+                    <li key={comment.id} style={styles.listItem}>
+                      {comment.content || ''}
+                      <button
+                        disabled={!localStorage.authorization}
+                        onClick={() => {
+                          if (userThumbupList.find(item => item === comment.id)) {
+                            clickThumUp(comment.id, 'DELETE');
+                          } else {
+                            clickThumUp(comment.id, 'PUT');
+                          }
+                        }}
+                        style={[styles.thumbup, !localStorage.authorization && { cursor: 'auto' }]}>
+                        {
+                          userThumbupList.find(item => item === comment.id) ?
+                            <span style={{ color: '#5b5bff' }}><i className="fa fa-thumbs-up" />{comment.good}</span> :
+                            <span><i className="fa fa-thumbs-up" />{comment.good}</span>
+                        }
+                      </button>
+                    </li>
+                  )) : <div>尚無評論</div>}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -164,6 +260,8 @@ class CourseDetail extends Component {
 CourseDetail.defaultProps = {
   course: null,
   comments: [],
+  averageScore: null,
+  userThumbupList: [],
 };
 
 CourseDetail.propTypes = {
@@ -171,8 +269,13 @@ CourseDetail.propTypes = {
   getCourseDetail: T.func.isRequired,
   getComments: T.func.isRequired,
   clearState: T.func.isRequired,
+  getAverageScore: T.func.isRequired,
+  checkThumbUp: T.func.isRequired,
+  clickThumUp: T.func.isRequired,
   course: T.shape({}),
   comments: T.arrayOf(T.shape({})),
+  averageScore: T.number,
+  userThumbupList: T.arrayOf(T.number),
   // react
   eventHandler: T.shape({
     onClick: T.func.isRequired,
@@ -183,7 +286,9 @@ CourseDetail.propTypes = {
 const reduxHook = connect(
   state => ({
     course: state.Detail.courseInfo,
+    averageScore: state.Detail.averageScore,
     comments: state.Detail.comments,
+    userThumbupList: state.Detail.commentsWithClickedThumbup,
   }),
   dispatch => bindActionCreators({
     ...detailActions,

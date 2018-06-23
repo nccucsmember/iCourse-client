@@ -114,6 +114,14 @@ class MainBoard extends ReactComponent {
                 <Route path="/" component={ClientRoute} />
               </Switch>
             </div>
+            <div>
+              <img
+                style={{
+                  margin: 10,
+                  float: 'right' }}
+                alt="創用 CC 授權條款"
+                src="https://i.creativecommons.org/l/by-nc-nd/3.0/tw/80x15.png" />
+            </div>
           </div>
         </div>
       </div>

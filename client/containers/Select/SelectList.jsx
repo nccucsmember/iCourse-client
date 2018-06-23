@@ -9,6 +9,7 @@ import * as SelectActions from '../../actions/Select.js';
 
 import Theme from '../../styles/Theme.js';
 // components
+import CourseDetail from '../Lightbox/CourseDetail.jsx';
 
 
 // Style
@@ -145,6 +146,8 @@ class SelectList extends Component {
       renderCourses: props.courses || [],
       draggedCourse: null,
       beforeResort: [],
+      showLightbox: false,
+      courseId: '',
     };
   }
 
@@ -340,7 +343,16 @@ class SelectList extends Component {
                   <span style={[styles.text, { flex: '4 4 200px' }]}>
                     {`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}
                   </span>
-                  <button style={[styles.detailButton, { flex: '2 2 100px' }]}>more</button>
+                  <button
+                    onClick={() => {
+                      this.setState({
+                        courseId: course.subject_id,
+                        showLightbox: true,
+                      });
+                    }}
+                    style={[styles.detailButton, { flex: '2 2 100px' }]}>
+                    more
+                  </button>
                   <button
                     style={[styles.addButton, { flex: '2 2 140px' }]}
                     onClick={() => {
@@ -356,6 +368,18 @@ class SelectList extends Component {
             ))}
           </div>
         </div>
+        {
+          this.state.showLightbox &&
+          <CourseDetail
+            courseId={this.state.courseId}
+            eventHandler={{
+              onClick: () => {
+                this.setState({
+                  showLightbox: false,
+                });
+              },
+            }} />
+        }
       </div>
     );
   }
