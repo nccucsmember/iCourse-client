@@ -76,6 +76,7 @@ const styles = {
   },
   listItemWrapper: {
     display: 'flex',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     margin: '10px 0px',
     padding: 0,
@@ -154,8 +155,6 @@ class CourseDetail extends Component {
       courseId,
       userThumbupList,
       clickThumUp,
-      getComments,
-      checkThumbUp,
     } = this.props;
     if (!course) return null;
     return (
@@ -201,7 +200,7 @@ class CourseDetail extends Component {
                 <ul style={styles.listItemWrapper}>
                   {comments[0] ? comments.map(comment => (
                     <li key={comment.id} style={styles.listItem}>
-                      {comment.content || ''}（評分: {comment.score})
+                      {comment.content || ''}
                       <button
                         disabled={!localStorage.authorization}
                         onClick={() => {
