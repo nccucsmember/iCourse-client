@@ -16,8 +16,10 @@ export default (state = {
   switch (action.type) {
     case CLICK_THUMB_UP: {
       const editCommentIndex = state.comments &&
+      state.comments[0] &&
       state.comments.findIndex(item => item.id === action.commentId);
       const editThumbIndex = state.commentsWithClickedThumbup &&
+      state.commentsWithClickedThumbup[0] &&
       state.commentsWithClickedThumbup.findIndex(item => item === action.commentId);
       switch (action.method) {
         case 'DELETE':
@@ -36,7 +38,7 @@ export default (state = {
         case 'PUT':
           return {
             ...state,
-            commentsWithClickedThumbup: [...state.commentsWithClickedThumbup, action.commentId],
+            commentsWithClickedThumbup: editThumbIndex ? [...state.commentsWithClickedThumbup, action.commentId] : [action.commentId],
             comments: [
               ...state.comments.slice(0, editCommentIndex),
               action.comment_status,
