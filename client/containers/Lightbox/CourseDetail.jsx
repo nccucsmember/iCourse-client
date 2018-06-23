@@ -59,6 +59,33 @@ const styles = {
     fontSize: 20,
     fontWeight: 300,
   },
+  table: {
+    margin: '20px 0px',
+    minWidth: 50,
+    fontSize: 20,
+    fontWeight: 300,
+    border: '1px solid #808080',
+    backgroundColor: '#eef3f7',
+    borderCollapse: 'collapse',
+    width: '100%',
+  },
+  tr: {
+    padding: 8,
+    border: '1px solid #ddd',
+  },
+  tableTitle: {
+    color: '#ffffff',
+    padding: 8,
+    border: '1px solid #5385ac',
+    backgroundColor: '#4c7a9e',
+    width: '20%',
+  },
+  tableContent: {
+    padding: 8,
+    border: '1px solid #5385ac',
+    backgroundColor: '#eef3f7',
+    width: '30%',
+  },
 };
 
 class CourseDetail extends Component {
@@ -106,19 +133,20 @@ class CourseDetail extends Component {
             </button>
             <div style={styles.titleWrapper}>
               <h2 style={styles.title}>課程詳細資訊</h2>
-              <ul>
-                <li style={styles.text}>課程代號：{course.subject_id}</li>
-                <li style={styles.text}>課程中文名稱：{course.course_name_ch}</li>
-                <li style={styles.text}>課程英文名稱：{course.course_name_en}</li>
-                <li style={styles.text}>開課學期：{course.semester}</li>
-                <li style={styles.text}>課程修別：{course.course_type}修</li>
-                <li style={styles.text}>學分數：{course.credits}學分</li>
-                <li style={styles.text}>上課期數：{course.num_semesters}學期</li>
-                <li style={styles.text}>授課教師：{course.teacher}</li>
-                <li style={styles.text}>開課單位：{course.department}</li>
-                <li style={styles.text}>上課時間：{`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}</li>
-                <li style={styles.text}>上課地點：{course.location}</li>
-              </ul>
+              <table border="1" style={styles.table}>
+                <tr style={styles.tr}><td style={styles.tableTitle}>課程代號：</td><td colspan="3" style={styles.tableContent}>{course.subject_id}</td></tr>
+                <tr style={styles.tr}><td style={styles.tableTitle}>課程中文名稱：</td><td colspan="3" style={styles.tableContent}>{course.course_name_ch}</td></tr>
+                <tr style={styles.tr}><td style={styles.tableTitle}>課程英文名稱：</td><td colspan="3" style={styles.tableContent}>{course.course_name_en}</td></tr>
+                <tr style={styles.tr}><td style={styles.tableTitle}>開課學期：</td><td style={styles.tableContent}>{course.semester}</td>
+                  <td style={styles.tableTitle}>課程修別：</td><td style={styles.tableContent}>{course.course_type}修</td></tr>
+                <tr style={styles.tr}><td style={styles.tableTitle}>學分數：</td>
+                  <td style={styles.tableContent}>{course.credits}學分</td>
+                  <td style={styles.tableTitle}>上課期數：</td><td style={styles.tableContent}>{course.num_semesters}學期</td></tr>
+                <tr style={styles.tr}><td style={styles.tableTitle}>授課教師：</td><td style={styles.tableContent}>{course.teacher}</td>
+                  <td style={styles.tableTitle}>開課單位：</td><td style={styles.tableContent}>{course.department}</td></tr>
+                <tr style={styles.tr}><td style={styles.tableTitle}>上課時間：</td><td style={styles.tableContent}>{`${course.weekday || ''} ${course.begin_time && course.begin_time.match(/T(\d+:\d+)/i)[1]} - ${course.end_time && course.end_time.match(/T(\d+:\d+)/i)[1]}`}</td>
+                  <td style={styles.tableTitle}>上課地點：</td><td style={styles.tableContent}>{course.location}</td></tr>
+              </table>
               <h2 style={styles.title}>課程評價</h2>
               <ul>
                 {comments[0] ? comments.map(comment => (
