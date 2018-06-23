@@ -115,12 +115,23 @@ class MainBoard extends ReactComponent {
               </Switch>
             </div>
             <div>
-              <img
+              <a href="http://creativecommons.org/licenses/by-nc-nd/3.0/tw/">
+                <img
+                  style={{
+                    position: 'fixed',
+                    bottom: '10px',
+                    right: '10px' }}
+                  alt="創用 CC 授權條款"
+                  src="https://i.creativecommons.org/l/by-nc-nd/3.0/tw/88x31.png" />
+              </a>
+            </div>
+            <div>
+              <footer
                 style={{
                   margin: 10,
-                  float: 'right' }}
-                alt="創用 CC 授權條款"
-                src="https://i.creativecommons.org/l/by-nc-nd/3.0/tw/80x15.png" />
+                  textAlign: 'center' }}>
+                Copyright &copy; <a href="https://github.com/nccucsmember">2018 政大資科系 iCourse</a> All rights reserved.
+              </footer>
             </div>
           </div>
         </div>
