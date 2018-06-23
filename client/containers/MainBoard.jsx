@@ -130,7 +130,7 @@ class MainBoard extends ReactComponent {
                 style={{
                   margin: 10,
                   textAlign: 'center' }}>
-                Copyright &copy; 2018 政大資科系 iCourse
+                Copyright &copy; 2018 政大資科系 iCourse All rights reserved.
               </footer>
             </div>
           </div>
