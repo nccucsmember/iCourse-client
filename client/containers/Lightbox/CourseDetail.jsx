@@ -93,7 +93,10 @@ const styles = {
     justifyConent: 'flex-start',
   },
   orderType: {
-    border: 'none',
+    borderTop: 'none',
+    borderRight: 'none',
+    borderBottom: 'none',
+    borderLeft: 'none',
     backgroundColor: 'transparent',
     fontSize: 15,
     fontWeight: 300,
@@ -124,6 +127,7 @@ class CourseDetail extends Component {
       getCourseDetail,
       getComments,
       getAverageScore,
+      checkThumbUp,
     } = this.props;
     const {
       orderType,
@@ -131,6 +135,7 @@ class CourseDetail extends Component {
     getCourseDetail(courseId);
     getComments(courseId, orderType);
     getAverageScore(courseId);
+    checkThumbUp(courseId);
   }
 
   componentWillReceiveProps() {
@@ -147,6 +152,7 @@ class CourseDetail extends Component {
       comments,
       averageScore,
       courseId,
+      userThumbupList,
     } = this.props;
     if (!course) return null;
     return (
@@ -194,8 +200,13 @@ class CourseDetail extends Component {
                     <li key={comment.id} style={styles.listItem}>
                       {comment.content || ''}（評分: {comment.score})
                       <button
-                        style={styles.thumbup}>
-                        <i className="fa fa-thumbs-up" />{comment.good}
+                        disabled={!localStorage.authorization}
+                        style={[styles.thumbup, !localStorage.authorization && { cursor: 'auto' }]}>
+                        {
+                          userThumbupList.find(item => item === comment.id) ?
+                            <span style={{ color: '#5b5bff' }}><i className="fa fa-thumbs-up" />{comment.good}</span> :
+                            <span><i className="fa fa-thumbs-up" />{comment.good}</span>
+                        }
                       </button>
                     </li>
                   )) : <div>尚無評論</div>}
@@ -213,6 +224,7 @@ CourseDetail.defaultProps = {
   course: null,
   comments: [],
   averageScore: null,
+  userThumbupList: [],
 };
 
 CourseDetail.propTypes = {
@@ -221,9 +233,11 @@ CourseDetail.propTypes = {
   getComments: T.func.isRequired,
   clearState: T.func.isRequired,
   getAverageScore: T.func.isRequired,
+  checkThumbUp: T.func.isRequired,
   course: T.shape({}),
   comments: T.arrayOf(T.shape({})),
   averageScore: T.number,
+  userThumbupList: T.arrayOf(T.number),
   // react
   eventHandler: T.shape({
     onClick: T.func.isRequired,
@@ -236,6 +250,7 @@ const reduxHook = connect(
     course: state.Detail.courseInfo,
     averageScore: state.Detail.averageScore,
     comments: state.Detail.comments,
+    userThumbupList: state.Detail.commentsWithClickedThumbup,
   }),
   dispatch => bindActionCreators({
     ...detailActions,

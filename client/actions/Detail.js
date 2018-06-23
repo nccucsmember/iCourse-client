@@ -4,7 +4,21 @@ export const GET_COURSE_DETAIL = 'GET_COURSE_DETAIL';
 export const DETAIL_CLEAR_STATE = 'DETAIL_CLEAR_STATE';
 export const GET_COURSE_COMMENTS = 'GET_COURSE_COMMENTS';
 export const GET_COURSE_AVERAGE_SCORE = 'GET_COURSE_AVERAGE_SCORE';
+export const CHECK_COURSE_THUMB_UP = 'CHECK_COURSE_THUMB_UP';
 
+export function checkThumbUp(courseId) {
+  return {
+    [API_REQUEST]: {
+      types: [
+        CHECK_COURSE_THUMB_UP,
+      ],
+      entrypoint: `/comment/${courseId}/check_thumbup`,
+      headers: {
+        authorization: localStorage.authorization,
+      },
+    },
+  };
+}
 
 export function clearState() {
   return {
